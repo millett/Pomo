@@ -14,6 +14,6 @@ Anki 2.1
 Forked from [Tomato Clock for Anki2.0](https://ankiweb.net/shared/info/1608644302)
 ### Screens
 ###### Select Tomato
-![](https://github.com/Aliuakbar/Pomodore/tree/master/screens/menu.png)
+![](https://raw.githubusercontent.com/Aliuakbar/Pomodore/master/TomatoClock/screens/menu.png)
 ###### Break Timer
-![](https://github.com/Aliuakbar/Pomodore/tree/master/screens/rest.png)
+![](https://raw.githubusercontent.com/Aliuakbar/Pomodore/master/TomatoClock/screens/rest.png)
