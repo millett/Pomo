@@ -6,8 +6,8 @@ minutes and take a break of 5 minutes.
 You can learn more it [here](https://en.wikipedia.org/wiki/Pomodoro_Technique)
 
 ### Installation
-- Installation Code: `1608644302`
-- Addon Homepage: [https://ankiweb.net/shared/info/1608644302](https://ankiweb.net/shared/info/1608644302)
+- Installation Code: `TODO`
+- Addon Homepage: [https://ankiweb.net/shared/info/1608644302](https://ankiweb.net/shared/info/TODO)
 -
 ##### Version
 Anki 2.1
