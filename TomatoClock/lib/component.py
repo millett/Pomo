@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
-# Created: 3/9/2018
-# Project : TomatoClock
 import json
 
-from PyQt4.QtCore import Qt
-from PyQt4.QtGui import QMessageBox
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QMessageBox
 
 import anki.lang
-from TomatoClock.lib.constant import UPDATE_LOGS, __version__
+from .constant import UPDATE_LOGS, __version__
 from anki.lang import _
 from anki.sound import play
 from aqt import mw
@@ -49,7 +47,7 @@ class anki_deckbrowser(DeckBrowser):
         <br>
         %(stats)s
         %(countwarn)s
-        
+
         %(tomato_summary)s
         </center>
         <script>
@@ -87,20 +85,20 @@ class anki_deckbrowser(DeckBrowser):
         """
 
     def _renderPage(self, reuse=False):
-        css = self.mw.sharedCSS + self._css
         if not reuse:
             self._dueTree = self.mw.col.sched.deckDueTree()
         tree = self._renderDeckTree(self._dueTree)
         stats = self._renderStats()
-        op = self._oldPos()
+        #op = self._oldPos()
         self.web.stdHtml(self._body % dict(
             tomato_summary=self.reports(),
-            tree=tree, stats=stats, countwarn=self._countWarn()), css=css,
-                         js=anki.js.jquery + anki.js.ui, loadCB=lambda ok: \
-                self.web.page().mainFrame().setScrollPosition(op))
+            tree=tree, stats=stats, countwarn=self._countWarn()),
+            css=["deckbrowser.css"],
+                        js=["jquery.js", "jquery-ui.js", "deckbrowser.js"])
         self.web.key = "deckBrowser"
         self._drawButtons()
-        self.web.setLinkHandler(self._linkHandler)
+        #self.web.setLinkHandler(self._linkHandler)
+
 
 
 class anki_overview(Overview):
@@ -137,10 +135,10 @@ class anki_overview(Overview):
                 cur_log_ver, cur_update_msg = logs
                 if cur_log_ver != self.addon_version:
                     continue
-                QMessageBox.warning(mw, trans("TOMATO COLOCK"), u"""
+                QMessageBox.warning(mw, trans("TOMATO COLOCK"), """
                 <p><b>v{} {}:</b></p>
                 <p>{}</p>
-                """.format(cur_log_ver, u"更新" if currentLang == "zh_CN" else u"Update", cur_update_msg))
+                """.format(cur_log_ver, "更新" if currentLang == "zh_CN" else "Update", cur_update_msg))
                 ProfileConfig.ttc_current_version = self.addon_version
 
     def _table(self):
@@ -175,13 +173,13 @@ class anki_overview(Overview):
                                 </table>
                             </td>
                         </tr>
-                        
+
                     </table>
-                        
+
                     <table id=tomato_chart  align=center valign=center>
                         <td colspan=5>%s</td>
                     </table>
-                        
+
                     ''' % (
                 anki.lang._("New"), counts[0],
                 anki.lang._("Learning"), counts[1],
@@ -260,7 +258,7 @@ class anki_reviewer(Reviewer):
         else:
             super(anki_reviewer, self)._linkHandler(url)
 
-    def _bottomHTML(self):
+    def NO_bottomHTML(self): #deac
         if not self.mode:
             mw.menuBar().hide()
             mw.toolbar.web.hide()
@@ -271,7 +269,7 @@ class anki_reviewer(Reviewer):
             <style>
             body{font-family: 'Microsoft YaHei UI', serif;}
             .timer {font-family: 'Microsoft YaHei UI', serif;
-                        color: #f0545e;font-weight: bold;font-size:15pt; 
+                        color: #f0545e;font-weight: bold;font-size:15pt;
                         padding-left: 5px; padding-right: 5px; white-space: nowrap; }
             </style>
 
@@ -283,8 +281,8 @@ class anki_reviewer(Reviewer):
                     <table >
                     <tr>
                         <td width=50 align=center valign=center class=stat>
-                            <input type=image value = "%(r)s" 
-                                    onclick="py.link('decks');" 
+                            <input type=image value = "%(r)s"
+                                    onclick="py.link('decks');"
                                     src="qrc:/icon/tomato.png" width=32 height=32 />
                         </td>
                         <td width=50 align=center valign=center class=stat>

@@ -1,12 +1,12 @@
 import math
+from PyQt5.QtWidgets import *
 
-from PyQt4.QtCore import QTimer, QSize, Qt
-from PyQt4.QtGui import QProgressBar, QLabel, QFont, QVBoxLayout, QPainter, QPen, QColor, QDialog, QPushButton, QIcon, \
-    QPixmap
+from PyQt5.QtCore import QTimer, QSize, Qt
+#from PyQt5.QtGui import (QProgressBar, QLabel, QFont, QVBoxLayout, QPainter, QPen, QColor, QDialog, QPushButton, QIcon,, QPixmap)
+from PyQt5.QtGui import QPainter, QColor, QFont, QPen
 
 from aqt import mw
 from aqt.utils import askUser
-from .DonateWidget20 import DialogDonate
 from ..lib.config import ProfileConfig, UserConfig
 from ..lib.constant import MIN_SECS
 from ..lib.lang import _
@@ -19,7 +19,7 @@ class RoundProgress(QProgressBar):
         self.values = (self.values * 360) / 100
         self.n = self.value()
         self.label = QLabel(self)
-        self.label.setFont(QFont("courrier", math.sqrt(self.width())))
+        # self.label.setFont(QFont("courrier", math.sqrt(self.width())))
         self.v = QVBoxLayout(self)
         self.setLayout(self.v)
         self.v.addWidget(self.label)
@@ -66,8 +66,6 @@ class RestDialog(QDialog):
         self.btn_continue = QPushButton(_("IGNORE REST"), self)
         self.btn_continue.setFixedSize(QSize(100, 30))
         self.btn_continue.setObjectName("btn_ignore_rest")
-        if not ProfileConfig.donate_alerted:
-            self.btn_continue.setIcon(QIcon(QPixmap(":/Icon/icons/dollar.png")))
         self.btn_continue.clicked.connect(self.on_btn_ignore_rest)
 
         self.a = 0
@@ -90,7 +88,7 @@ class RestDialog(QDialog):
         secs = self.total_secs - min * MIN_SECS
 
         self.pr.label.setText(
-            u"<center>" + _("REST") + u"<br>" + u"{}:{}".format(str(min).zfill(2), str(secs).zfill(2)) + u"</center>"
+            "<center>" + _("REST") + "<br>" + "{}:{}".format(str(min).zfill(2), str(secs).zfill(2)) + "</center>"
         )
 
         if self.total_secs<=0:
@@ -106,6 +104,7 @@ class RestDialog(QDialog):
     # noinspection PyMethodOverriding
     def exec_(self, tomato_min):
         self.start(UserConfig.BREAK_MINUTES.get(str(tomato_min) + "MIN", 5) * MIN_SECS)
+        # seams reason for 5minutes break (display?) bug
         return super(RestDialog, self).exec_()
 
     def reject(self):
@@ -114,12 +113,7 @@ class RestDialog(QDialog):
         super(RestDialog, self).reject()
 
     def on_btn_ignore_rest(self, ):
-        if not ProfileConfig.donate_alerted:
-            DialogDonate(mw).exec_()
-            ProfileConfig.donate_alerted = True
-            self.btn_continue.setIcon(QIcon())
-
-        if askUser(u"""
-                <p>""" + _("IGNORE REST QUESTION") + u"""</p>
+        if askUser("""
+                <p>""" + _("IGNORE REST QUESTION") + """</p>
                 """, self):
             self.reject()

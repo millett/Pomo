@@ -15,6 +15,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import sys
+from PyQt5.QtWidgets import *
 
 IS_PY3K = sys.version[0] == '3'
 
@@ -23,18 +24,18 @@ if IS_PY3K:
     from urllib import request as web
     from urllib.request import urlretrieve
 
-    unicode = str
+    str = str
 else:
-    import httplib
+    import http.client
     import urllib2 as web
-    from urllib import urlretrieve
+    from urllib.request import urlretrieve
 
 import json
 from datetime import datetime
 from functools import partial
 from operator import itemgetter
 from threading import Thread
-from uuid import uuid4
+from .uuid import uuid4
 
 import aqt
 from anki.lang import _, currentLang
@@ -47,14 +48,14 @@ CACHED_VALUES = []
 
 # region Consts
 trans_dict = {
-    "ASK UPDATE NEW VERSION": {'zh_CN': u'新版本可用，是否更新？',
+    "ASK UPDATE NEW VERSION": {'zh_CN': '新版本可用，是否更新？',
                                'en': "There's new version available, please confirm to update."},
-    "UPDATE OK": {'zh_CN': u'更新完毕，请重启Anki。', 'en': "Completed! Please restart Anki."},
-    "CONFIGURATION": {'zh_CN': u'设置', 'en': "Configuration"},
-    "WECHAT CHANNEL": {'zh_CN': u'微信公众号', 'en': "WeChat Channel"},
-    "MORE ADDON": {'zh_CN': u'更多插件', 'en': "More Addon"},
-    "NEW VERSION ALERT": {'zh_CN': u'新版本可用', 'en': "New Version Available"},
-    "VOTE ADDON": {'zh_CN': u"赞！", 'en': "UpVote！"},
+    "UPDATE OK": {'zh_CN': '更新完毕，请重启Anki。', 'en': "Completed! Please restart Anki."},
+    "CONFIGURATION": {'zh_CN': '设置', 'en': "Configuration"},
+    "WECHAT CHANNEL": {'zh_CN': '微信公众号', 'en': "WeChat Channel"},
+    "MORE ADDON": {'zh_CN': '更多插件', 'en': "More Addon"},
+    "NEW VERSION ALERT": {'zh_CN': '新版本可用', 'en': "New Version Available"},
+    "VOTE ADDON": {'zh_CN': "赞！", 'en': "UpVote！"},
 
 }
 # endregion
@@ -78,10 +79,10 @@ class MetaConfigObj(type):
     # noinspection PyArgumentList
     def __new__(mcs, name, bases, attributes):
 
-        config_dict = {k: attributes[k] for k in attributes.keys() if not k.startswith("_") and k != "Meta"}
+        config_dict = {k: attributes[k] for k in list(attributes.keys()) if not k.startswith("_") and k != "Meta"}
         attributes['config_dict'] = config_dict
 
-        for k in config_dict.keys():
+        for k in list(config_dict.keys()):
             attributes.pop(k)
         c = super(MetaConfigObj, mcs).__new__(mcs, name, bases, attributes)
 
@@ -228,7 +229,7 @@ def decCache(function):
 def decEnsureRUnicode(func):
     def wrapper(*args, **kwargs):
         ret = func(*args, **kwargs)
-        if isinstance(ret, (str, unicode)):
+        if isinstance(ret, str):
             return ensureUnicode(ret)
         return ret
 
@@ -276,9 +277,9 @@ def ensureDir(name):
 
 def ensureUnicode(_str):
     try:
-        _str = unicode(_str)
+        _str = str(_str)
     except UnicodeError:
-        _str = unicode(_str, 'gbk')
+        _str = str(_str, 'gbk')
     return _str
 
 
@@ -318,7 +319,7 @@ def getWebGMT():
 
     :rtype: datetime
     """
-    conn = httplib.HTTPConnection("www.baidu.com")
+    conn = http.client.HTTPConnection("www.baidu.com")
     conn.request("GET", "/")
     r = conn.getresponse()
     ts = r.getheader('date')
@@ -661,21 +662,6 @@ class ConfigEditor(QDialog):
         super(ConfigEditor, self).accept()
 
 
-class WeChatButton(_ImageButton):
-    def __init__(self, parent, qr_file):
-        super(WeChatButton, self).__init__(parent, ":/icon/wechat.png")
-        self.setObjectName("btn_wechat")
-        self.setToolTip(trans("WECHAT CHANNEL"))
-        self.setWhatsThis(self.toolTip())
-        self.clicked.connect(self.on_clicked)
-        self._qr_file_nm = qr_file
-
-    def on_clicked(self):
-        self.parent().hide()
-        ClickCloseDialog(self, self._qr_file_nm).exec_()
-        self.parent().show()
-
-
 class VoteButton(_ImageButton):
 
     def __init__(self, parent, addon_cd):
@@ -689,45 +675,6 @@ class VoteButton(_ImageButton):
         openLink("https://ankiweb.net/shared/review/%s" % self.addon_cd)
 
 
-class MoreAddonButton(_ImageButton):
-    class _download_json(QThread):
-        def __init__(self, parent, json_file):
-            super(MoreAddonButton._download_json, self).__init__(parent)
-            self.json_file = json_file
-
-        def run(self):
-            try:
-                urlretrieve("https://raw.githubusercontent.com/upday7/LiveCodeHub/master/more_addons.json",
-                            self.json_file)
-            except:
-                pass
-
-    def __init__(self, parent):
-        super(MoreAddonButton, self).__init__(parent, ":/icon/more.png")
-        self.setObjectName("btn_more_addon")
-        self.setToolTip(trans("MORE ADDON"))
-        self.json_file = "_more_addons.json"
-        self._thr_download_json = MoreAddonButton._download_json(self, self.json_file)
-        self._thr_download_json.finished.connect(self.setup_menu)
-        self.m = None
-        self._thr_download_json.start()
-
-    def setup_menu(self):
-        if not os.path.isfile(self.json_file):
-            self.setVisible(False)
-        else:
-            self.m = MoreAddonMenu(self, self.json_file)
-            self.m.setObjectName("mmr")
-            self.setVisible(True)
-
-            if IS_PY3K:
-                def _show_menu():
-                    self.m.move(QCursor.pos())
-                    self.m.show()
-
-                self.clicked.connect(lambda clicked: _show_menu())
-            else:
-                self.setMenu(self.m)
 
 
 class UpgradeButton(_ImageButton):
@@ -754,50 +701,6 @@ class UpgradeButton(_ImageButton):
     def on_clicked(self):
         if self.updater.ask_update() == QMessageBox.Yes:
             self.updater.upgrade()
-
-
-class MoreAddonMenu(QMenu):
-    def __init__(self, parent, config_json=r"F:\PyProjects\AnkiProjects\TomatoClock\AnkiMoreAddons.json"):
-        super(MoreAddonMenu, self).__init__(parent)
-        self.setObjectName("more_addon_menu")
-        with open(config_json, "r") as f:
-            try:
-                self.config_json = json.load(f, encoding="utf-8")
-            except:
-                return
-        self.parse()
-
-    def parse(self):
-        for index, addon_data in sorted(self.config_json.items(), key=itemgetter(0)):
-            addon_nm = addon_data.get(currentLang, "en")
-            anki_versions = addon_data.get("anki_versions")
-            urls = addon_data.get("urls")
-            tip_data = addon_data.get("tip")
-
-            if not urls:
-                return
-
-            if len(urls) == 1:
-                addon_menu = QAction(addon_nm, self)
-            else:
-                addon_menu = QMenu(addon_nm, self)
-
-            addon_menu.setToolTip(tip_data.get(currentLang, "en"))
-            addon_menu.setWhatsThis(self.toolTip())
-
-            for url_nm, url_data in sorted(urls.items(), key=itemgetter(0)):
-                if len(urls) == 1:
-                    addon_menu.triggered.connect(partial(openLink, (url_data['url'])))
-                else:
-                    url_action = QAction(url_data.get(currentLang, "en"), addon_menu)
-                    url_action.triggered.connect(partial(openLink, (url_data['url'])))
-                    addon_menu.addAction(url_action)
-
-            if isinstance(addon_menu, QAction):
-                self.addAction(addon_menu)
-            else:
-                self.addMenu(addon_menu)
-
 
 def HLine():
     toto = QFrame()

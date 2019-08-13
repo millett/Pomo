@@ -6,29 +6,29 @@ import json
 import os
 from copy import deepcopy
 from operator import itemgetter
-from urllib import urlretrieve
+from urllib.request import urlretrieve
 
-from PyQt4.QtCore import QUrl, QDir
+from PyQt5.QtCore import QUrl, QDir
 
 trans = {
-    'TOMATO COLOCK': {'zh_CN': u'番茄时钟', 'en': u'Tomato Clock'},
-    'report days part1': {'zh_CN': u'最近番茄时钟数据：', 'en': u'Recent Tomato Clock statistics：'},
-    'days': {'zh_CN': u'天', 'en': u'day(s)'},
-    "'Minutes Studied'": {'zh_CN': u"'学习分钟数'", 'en': u"'Minutes Studied'"},
-    "'Best Focus Hour'": {'zh_CN': u"'最佳学习时段'", 'en': u"'Best Focus Hour'"},
-    "'Count of Tomatoes and Minutes'": {'zh_CN': u"'番茄和学习分钟'",
-                                        'en': u"'Count of Tomatoes and Minutes'"},
-    "'Tomato Count'": {'zh_CN': u"'番茄个数'", 'en': u"'Tomato Count'"},
-    "'Cards'": {'zh_CN': u"'卡片'", 'en': u"'Cards'"},
-    "'{a} <br/>{b} Clock: {c} Minutes'": {'zh_CN': u"'{a} <br/>{b} 点: {c} 分钟'",
-                                          'en': u"'{a} <br/>{b} Clock: {c} Minutes'"},
+    'TOMATO COLOCK': {'zh_CN': '番茄时钟', 'en': 'Tomato Clock'},
+    'report days part1': {'zh_CN': '最近番茄时钟数据：', 'en': 'Recent Tomato Clock statistics：'},
+    'days': {'zh_CN': '天', 'en': 'day(s)'},
+    "'Minutes Studied'": {'zh_CN': "'学习分钟数'", 'en': "'Minutes Studied'"},
+    "'Best Focus Hour'": {'zh_CN': "'最佳学习时段'", 'en': "'Best Focus Hour'"},
+    "'Count of Tomatoes and Minutes'": {'zh_CN': "'番茄和学习分钟'",
+                                        'en': "'Count of Tomatoes and Minutes'"},
+    "'Tomato Count'": {'zh_CN': "'番茄个数'", 'en': "'Tomato Count'"},
+    "'Cards'": {'zh_CN': "'卡片'", 'en': "'Cards'"},
+    "'{a} <br/>{b} Clock: {c} Minutes'": {'zh_CN': "'{a} <br/>{b} 点: {c} 分钟'",
+                                          'en': "'{a} <br/>{b} Clock: {c} Minutes'"},
 
-    "total_studied_hour": {'zh_CN': u'总时间（小时）', 'en': u'Total Time (Hour)'},
-    "total_tomato": {'zh_CN': u'总番茄钟', 'en': u'Total Tomato'},
-    "today_total_min": {'zh_CN': u'今日时间（分钟）', 'en': u'Today Time (Minute)'},
-    "today_total_tomato": {'zh_CN': u'今日番茄钟', 'en': u'Today Tomato'},
-    "today_min_pctg": {'zh_CN': u'今日时间完成率', 'en': u'Today Time %'},
-    "today_tomato_pctg": {'zh_CN': u'今日番茄完成率', 'en': u'Today Tomato %'}
+    "total_studied_hour": {'zh_CN': '总时间（小时）', 'en': 'Total Time (Hour)'},
+    "total_tomato": {'zh_CN': '总番茄钟', 'en': 'Total Tomato'},
+    "today_total_min": {'zh_CN': '今日时间（分钟）', 'en': 'Today Time (Minute)'},
+    "today_total_tomato": {'zh_CN': '今日番茄钟', 'en': 'Today Tomato'},
+    "today_min_pctg": {'zh_CN': '今日时间完成率', 'en': 'Today Time %'},
+    "today_tomato_pctg": {'zh_CN': '今日番茄完成率', 'en': 'Today Tomato %'}
 
 }
 
@@ -43,7 +43,7 @@ def _(key):
     def disp(s):
         return s.lower().capitalize()
 
-    for k, v in trans.items():
+    for k, v in list(trans.items()):
         trans[k.upper()] = v
 
     if key not in trans or lang not in trans[key]:
@@ -51,7 +51,7 @@ def _(key):
     return trans[key][lang]
 
 
-_echart_js = u"http://echarts.baidu.com/examples/vendors/echarts/echarts.min.js"
+_echart_js = "http://echarts.baidu.com/examples/vendors/echarts/echarts.min.js"
 
 
 class TomatoStats:
@@ -87,7 +87,7 @@ class TomatoStats:
                 <td class="summary_td">
                     <span class="summary_val">%(total_studied_hour_val)s</span>
                     <br>
-                    <span class="summary_lb">%(total_studied_hour)s</span>  
+                    <span class="summary_lb">%(total_studied_hour)s</span>
                 </td>
                 <td class="summary_td">
                     <span class="summary_val">%(today_total_min_val)s</span>
@@ -99,7 +99,7 @@ class TomatoStats:
                     <br>
                     <span class="summary_lb">%(today_min_pctg)s</span>
                 </td>
-                
+
                 <td class="summary_td">
                     <span class="summary_val">%(total_tomato_val)s</span>
                     <br>
@@ -130,30 +130,30 @@ class TomatoStats:
                 today_total_min_val=today_total_min,
                 today_total_tomato_val=today_total_tomato,
                 today_min_pctg_val=today_min_pctg,
-                today_tomato_pctg_val=today_tomato_pctg
+                today_tomato_pctg_val=str(round(float(today_tomato_pctg[0:-1]), 2))
             )
 
-            html = u"""
+            html = """
             <html>
             <style>
                 * {
                     font-family: 'Microsoft YaHei UI', Consolas, serif;
                 }
-            
+
                 .summary_td {
                     text-align: center;
                     font-family: 'Microsoft YaHei UI', Consolas, serif;
                 }
-            
+
                 .summary_val {
                     font-weight: bold;
                     font-size: large;
                 }
-            
+
                 .summary_lb {
                     font-size: smaller;
                 }
-            
+
                 .summary td {
                     /*border: 1px solid #ed1c40;*/
                     padding: 0 20px 20px 0;
@@ -166,7 +166,7 @@ class TomatoStats:
             <hr>
             <table width=95%% align=center>
                 <tr>
-                    <td align=center colspan=2> 
+                    <td align=center colspan=2>
                         %s
                     </td>
                 </tr>
@@ -179,7 +179,7 @@ class TomatoStats:
                     <td width=600px height=300px id=tomato_hour align=center></td>
                 </tr>
                 <tr>
-                    <td align=left colspan=2> 
+                    <td align=left colspan=2>
                         <div>%s <select id=recent_days onchange="sel_Change()">
                           %s
                         </select> %s</div>
@@ -202,9 +202,9 @@ class TomatoStats:
                                  summary_table_html,
 
                                  _("report days part1"),
-                                 u"".join(
-                                     [u'<option value=%(days)s '
-                                      u'%(selected)s>%(days)s</option>' % dict(days=i,
+                                 "".join(
+                                     ['<option value=%(days)s '
+                                      '%(selected)s>%(days)s</option>' % dict(days=i,
                                                                                selected="selected='selected'"
                                                                                if i == self._recent_days else '')
                                       for i in
@@ -212,11 +212,11 @@ class TomatoStats:
                                  ),
                                  _("days"),
 
-                                 u"""
+                                 """
                                   <script>
                                   {}
                                   </script>
-                                  """.format(u"".join(reports_js)),
+                                  """.format("".join(reports_js)),
 
                                  )
             # set default selection
@@ -225,15 +225,15 @@ class TomatoStats:
         return ''
 
     def _ref_js(self, js_source):
-        js_file = u"_" + os.path.basename(js_source)
+        js_file = "_" + os.path.basename(js_source)
         try:
             if not os.path.exists(js_file):
                 urlretrieve(js_source, js_file)
             _script_src = QUrl.fromLocalFile(QDir.current().filePath(js_file)).toString()
         except Exception as exc:
-            print('Download %s failed, using CDN: %s' % (js_source, exc))
+            print(('Download %s failed, using CDN: %s' % (js_source, exc)))
             _script_src = js_source
-        return u"""<script src='""" + _script_src + u"""'></script>"""
+        return """<script src='""" + _script_src + """'></script>"""
 
     @property
     def _js_ref(self):
@@ -244,8 +244,8 @@ class TomatoStats:
         return ''  # self._ref_js("http://echarts.baidu.com/asset/theme/vintage.js")#
 
     def _graph(self, id, conf):
-        id = unicode(id, encoding="utf-8")
-        html = u"""
+        id = str(id)
+        html = """
         echarts.init(document.getElementById('%(id)s'),'%(theme)s').setOption(%(conf)s);
         """ % dict(id=id, conf=json.dumps(conf).replace("\"", ""), theme='')
         return html
@@ -273,7 +273,7 @@ class TomatoStats:
                         (strftime('%s', ts.ended) - strftime('%s', ts.started)) / (ts.target_secs*1.0) TOMATO_CNT,
                         (SELECT count(*)
                          FROM tomato_session_item tsi
-                         WHERE ts.id = tsi.session_id 
+                         WHERE ts.id = tsi.session_id
                          and tsi.answer_btn is not null) CARDS_CNT,
                          (strftime('%s', ts.ended) - strftime('%s', ts.started)) >= ts.target_secs COMPLETE_TOMATO_CNT
                       FROM tomato_session ts
@@ -283,7 +283,7 @@ class TomatoStats:
                               order by ts.tomato_dt desc)
                 GROUP BY TOMATO_DT
                 """.format("'" + "','".join(
-                    [unicode(self.db.deck['id']), ] if self._report_type == 'current' else self.db.all_decks_id,
+                    [str(self.db.deck['id']), ] if self._report_type == 'current' else self.db.all_decks_id,
                 ) + "'"), self.report_days).fetchall()
 
             if not _list_data:
@@ -340,7 +340,7 @@ class TomatoStats:
             series=[
                 dict(
                     name=_("'Minutes Studied'"),
-                    type=u"'bar'",
+                    type="'bar'",
                     data=[round(m, 2) for m in y_tomato_min]
                 )
             ]
@@ -367,7 +367,7 @@ class TomatoStats:
             series=[
                 dict(
                     name=_("'Tomato Count'"),
-                    type=u"'bar'",
+                    type="'bar'",
                     data=[round(c, 2) for c in y_tomato_count]
                 )
             ]
@@ -422,13 +422,13 @@ class TomatoStats:
               strftime('%H',ts.started)                 HOUR,
              round( sum((strftime('%s', ts.ended) - strftime('%s', ts.started)) / 60.0 ),2) MINS
             FROM tomato_session ts
-            WHERE ended IS NOT NULL 
+            WHERE ended IS NOT NULL
                   AND ts.tomato_dt >= ?
                   AND ts.deck in ({})
             GROUP BY strftime('%H',ts.started)
             ORDER BY strftime('%H',ts.started)
             """.format("'" + "','".join(
-                [unicode(self.db.deck['id']), ] if self._report_type == 'current' else self.db.all_decks_id,
+                [str(self.db.deck['id']), ] if self._report_type == 'current' else self.db.all_decks_id,
             ) + "'"), self.report_days).fetchall()
 
 
@@ -522,13 +522,13 @@ class TomatoStats:
             val = round(today_total_min / _today_targets, 4) * 100
             if val >= 100:  # floating problem, not an issue
                 val = 100
-            today_min_pctg = u"{}%".format(val)
+            today_min_pctg = "{}%".format(val)
         else:
-            today_min_pctg = u"0.00%"
+            today_min_pctg = "0.00%"
 
         if tried_tomato_cnt and tried_tomato_cnt[-1]:
-            today_tomato_pctg = u"{}%".format(round(today_total_tomato / tried_tomato_cnt[-1], 4) * 100)
+            today_tomato_pctg = "{}%".format(round(today_total_tomato / tried_tomato_cnt[-1], 4) * 100)
         else:
-            today_tomato_pctg = u"0.00%"
+            today_tomato_pctg = "0.00%"
         return (total_studied_hour, total_tomato, today_total_min, today_total_tomato,
                 today_min_pctg, today_tomato_pctg)

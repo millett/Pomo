@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # Created: 3/8/2018
 # Project : OneClock
-from PyQt4.QtCore import Qt, pyqtSignal
-from PyQt4.QtGui import QProgressBar
+from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt5.QtWidgets import QProgressBar
 
 
 class ClockProgress(QProgressBar):

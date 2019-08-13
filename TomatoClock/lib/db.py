@@ -46,7 +46,7 @@ class loader(object):
     def load(self, path):
         try:
             tmp = {}
-            exec open(path).read() in tmp
+            exec(open(path).read(), tmp)
             return tmp
         except:
             return None
@@ -55,13 +55,10 @@ class loader(object):
 class TomatoDB(DB):
 
     def __init__(self, db_path):
-        super(TomatoDB, self).__init__(db_path, str)
+        super(TomatoDB, self).__init__(db_path)
 
         # call start functions
-        list(map(
-            lambda _: getattr(self, _)(),
-            [func for func in dir(self) if func.startswith("_start_")]
-        ))
+        list([getattr(self, _)() for _ in [func for func in dir(self) if func.startswith("_start_")]])
 
         # register close
         atexit.register(self.close)
@@ -80,7 +77,7 @@ class TomatoDB(DB):
         else:
             try:
                 m = loader().load("_tomatostats.py")
-                if 'TomatoStats' not in m.keys():
+                if 'TomatoStats' not in list(m.keys()):
                     raise KeyError
             except:
                 m = _load_stats_mod()
@@ -93,8 +90,8 @@ class TomatoDB(DB):
     def cleanup(self):
         self.execute(
             """
-            DELETE FROM tomato_session_item WHERE questioned IS NOT NULL 
-            AND (answer_shown IS  NULL 
+            DELETE FROM tomato_session_item WHERE questioned IS NOT NULL
+            AND (answer_shown IS  NULL
             OR answered IS  NULL);
             """
         )
@@ -156,12 +153,12 @@ class TomatoDB(DB):
             return
         self.execute(
             """
-            INSERT INTO tomato_session_item(session_id, 
-            questioned, 
-            answered, 
-            answer_btn, 
-            card_id, 
-            note_id) 
+            INSERT INTO tomato_session_item(session_id,
+            questioned,
+            answered,
+            answer_btn,
+            card_id,
+            note_id)
             VALUES(?,?,NULL,NULL,?,?)
             """, self.session_id, self.now, self.card.id, self.card.nid
         )

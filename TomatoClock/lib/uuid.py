@@ -28,10 +28,10 @@ Typical usage:
     >>> uuid.uuid5(uuid.NAMESPACE_DNS, 'python.org')
     UUID('886313e1-3b8a-5372-9b90-0c9aee199e5d')
 
-    # make a UUID from a string of hex digits (braces and hyphens ignored)
+    # make a UUID from a string of hexadec digits (braces and hyphens ignored)
     >>> x = uuid.UUID('{00010203-0405-0607-0809-0a0b0c0d0e0f}')
 
-    # convert a UUID to a string of hex digits in standard form
+    # convert a UUID to a string of hexadec digits in standard form
     >>> str(x)
     '00010203-0405-0607-0809-0a0b0c0d0e0f'
 
@@ -56,7 +56,7 @@ class UUID(object):
     UUID objects are immutable, hashable, and usable as dictionary keys.
     Converting a UUID to a string with str() yields something in the form
     '12345678-1234-1234-1234-123456789abc'.  The UUID constructor accepts
-    five possible forms: a similar string of hexadecimal digits, or a tuple
+    five possible forms: a similar string of hexadec digits, or a tuple
     of six integer fields (with 32-bit, 16-bit, 16-bit, 8-bit, 8-bit, and
     48-bit values respectively) as an argument named 'fields', or a string
     of 16 bytes (with all the integer fields in big-endian order) as an
@@ -86,9 +86,9 @@ class UUID(object):
             time                    the 60-bit timestamp
             clock_seq               the 14-bit sequence number
 
-        hex         the UUID as a 32-character hexadecimal string
+        hexadec         the UUID as a 32-character hexadec string
 
-        int         the UUID as a 128-bit integer
+        integer        the UUID as a 128-bit integer
 
         urn         the UUID as a URN as specified in RFC 4122
 
@@ -99,15 +99,15 @@ class UUID(object):
                     when the variant is RFC_4122)
     """
 
-    def __init__(self, hex=None, bytes=None, bytes_le=None, fields=None,
-                       int=None, version=None):
-        r"""Create a UUID from either a string of 32 hexadecimal digits,
+    def __init__(self, hexadec=None, bytes=None, bytes_le=None, fields=None,
+                       integer=None, version=None):
+        r"""Create a UUID from either a string of 32 hexadec digits,
         a string of 16 bytes as the 'bytes' argument, a string of 16 bytes
         in little-endian order as the 'bytes_le' argument, a tuple of six
         integers (32-bit time_low, 16-bit time_mid, 16-bit time_hi_version,
         8-bit clock_seq_hi_variant, 8-bit clock_seq_low, 48-bit node) as
         the 'fields' argument, or a single 128-bit integer as the 'int'
-        argument.  When a string of hex digits is given, curly braces,
+        argument.  When a string of hexadec digits is given, curly braces,
         hyphens, and a URN prefix are all optional.  For example, these
         expressions all yield the same UUID:
 
@@ -120,20 +120,20 @@ class UUID(object):
         UUID(fields=(0x12345678, 0x1234, 0x5678, 0x12, 0x34, 0x567812345678))
         UUID(int=0x12345678123456781234567812345678)
 
-        Exactly one of 'hex', 'bytes', 'bytes_le', 'fields', or 'int' must
+        Exactly one of 'hexadec', 'bytes', 'bytes_le', 'fields', or 'int' must
         be given.  The 'version' argument is optional; if given, the resulting
         UUID will have its variant and version set according to RFC 4122,
-        overriding the given 'hex', 'bytes', 'bytes_le', 'fields', or 'int'.
+        overriding the given 'hexadec', 'bytes', 'bytes_le', 'fields', or 'int'.
         """
 
-        if [hex, bytes, bytes_le, fields, int].count(None) != 4:
-            raise TypeError('need one of hex, bytes, bytes_le, fields, or int')
-        if hex is not None:
-            hex = hex.replace('urn:', '').replace('uuid:', '')
-            hex = hex.strip('{}').replace('-', '')
-            if len(hex) != 32:
-                raise ValueError('badly formed hexadecimal UUID string')
-            int = long(hex, 16)
+        if [hexadec, bytes, bytes_le, fields, integer].count(None) != 4:
+            raise TypeError('need one of hexadec, bytes, bytes_le, fields, or int')
+        if hexadec is not None:
+            hexadec = hexadec.replace('urn:', '').replace('uuid:', '')
+            hexadec = hexadec.strip('{}').replace('-', '')
+            if len(hexadec) != 32:
+                raise ValueError('badly formed hexadec UUID string')
+            integer = int(hexadec, 16)
         if bytes_le is not None:
             if len(bytes_le) != 16:
                 raise ValueError('bytes_le is not a 16-char string')
@@ -143,51 +143,51 @@ class UUID(object):
         if bytes is not None:
             if len(bytes) != 16:
                 raise ValueError('bytes is not a 16-char string')
-            int = long(('%02x'*16) % tuple(map(ord, bytes)), 16)
+            integer = int(('%02x'*16) % tuple(map(ord, bytes)), 16)
         if fields is not None:
             if len(fields) != 6:
                 raise ValueError('fields is not a 6-tuple')
             (time_low, time_mid, time_hi_version,
              clock_seq_hi_variant, clock_seq_low, node) = fields
-            if not 0 <= time_low < 1<<32L:
+            if not 0 <= time_low < 1<<32:
                 raise ValueError('field 1 out of range (need a 32-bit value)')
-            if not 0 <= time_mid < 1<<16L:
+            if not 0 <= time_mid < 1<<16:
                 raise ValueError('field 2 out of range (need a 16-bit value)')
-            if not 0 <= time_hi_version < 1<<16L:
+            if not 0 <= time_hi_version < 1<<16:
                 raise ValueError('field 3 out of range (need a 16-bit value)')
-            if not 0 <= clock_seq_hi_variant < 1<<8L:
+            if not 0 <= clock_seq_hi_variant < 1<<8:
                 raise ValueError('field 4 out of range (need an 8-bit value)')
-            if not 0 <= clock_seq_low < 1<<8L:
+            if not 0 <= clock_seq_low < 1<<8:
                 raise ValueError('field 5 out of range (need an 8-bit value)')
-            if not 0 <= node < 1<<48L:
+            if not 0 <= node < 1<<48:
                 raise ValueError('field 6 out of range (need a 48-bit value)')
-            clock_seq = (clock_seq_hi_variant << 8L) | clock_seq_low
-            int = ((time_low << 96L) | (time_mid << 80L) |
-                   (time_hi_version << 64L) | (clock_seq << 48L) | node)
-        if int is not None:
-            if not 0 <= int < 1<<128L:
-                raise ValueError('int is out of range (need a 128-bit value)')
+            clock_seq = (clock_seq_hi_variant << 8) | clock_seq_low
+            integer= ((time_low << 96) | (time_mid << 80) |
+                   (time_hi_version << 64) | (clock_seq << 48) | node)
+        if integer is not None:
+            if not 0 <= integer< 1<<128:
+                raise ValueError('integer is out of range (need a 128-bit value)')
         if version is not None:
             if not 1 <= version <= 5:
                 raise ValueError('illegal version number')
             # Set the variant to RFC 4122.
-            int &= ~(0xc000 << 48L)
-            int |= 0x8000 << 48L
+            integer &= ~(0xc000 << 48)
+            integer |= 0x8000 << 48
             # Set the version number.
-            int &= ~(0xf000 << 64L)
-            int |= version << 76L
+            integer &= ~(0xf000 << 64)
+            integer |= version << 76
         self.__dict__['int'] = int
 
     def __cmp__(self, other):
         if isinstance(other, UUID):
-            return cmp(self.int, other.int)
+            return cmp(self.integer, other.integer)
         return NotImplemented
 
     def __hash__(self):
-        return hash(self.int)
+        return hash(self.integer)
 
     def __int__(self):
-        return self.int
+        return self.integer
 
     def __repr__(self):
         return 'UUID(%r)' % str(self)
@@ -196,14 +196,14 @@ class UUID(object):
         raise TypeError('UUID objects are immutable')
 
     def __str__(self):
-        hex = '%032x' % self.int
+        hexadec = '%032x' % self.integer
         return '%s-%s-%s-%s-%s' % (
-            hex[:8], hex[8:12], hex[12:16], hex[16:20], hex[20:])
+            hexadec[:8], hexadec[8:12], hexadec[12:16], hexadec[16:20], hexadec[20:])
 
     def get_bytes(self):
         bytes = ''
         for shift in range(0, 128, 8):
-            bytes = chr((self.int >> shift) & 0xff) + bytes
+            bytes = chr((self.integer >> shift) & 0xff) + bytes
         return bytes
 
     bytes = property(get_bytes)
@@ -222,51 +222,51 @@ class UUID(object):
     fields = property(get_fields)
 
     def get_time_low(self):
-        return self.int >> 96L
+        return self.integer >> 96
 
     time_low = property(get_time_low)
 
     def get_time_mid(self):
-        return (self.int >> 80L) & 0xffff
+        return (self.integer >> 80) & 0xffff
 
     time_mid = property(get_time_mid)
 
     def get_time_hi_version(self):
-        return (self.int >> 64L) & 0xffff
+        return (self.integer >> 64) & 0xffff
 
     time_hi_version = property(get_time_hi_version)
 
     def get_clock_seq_hi_variant(self):
-        return (self.int >> 56L) & 0xff
+        return (self.integer >> 56) & 0xff
 
     clock_seq_hi_variant = property(get_clock_seq_hi_variant)
 
     def get_clock_seq_low(self):
-        return (self.int >> 48L) & 0xff
+        return (self.integer >> 48) & 0xff
 
     clock_seq_low = property(get_clock_seq_low)
 
     def get_time(self):
-        return (((self.time_hi_version & 0x0fffL) << 48L) |
-                (self.time_mid << 32L) | self.time_low)
+        return (((self.time_hi_version & 0x0fff) << 48) |
+                (self.time_mid << 32) | self.time_low)
 
     time = property(get_time)
 
     def get_clock_seq(self):
-        return (((self.clock_seq_hi_variant & 0x3fL) << 8L) |
+        return (((self.clock_seq_hi_variant & 0x3f) << 8) |
                 self.clock_seq_low)
 
     clock_seq = property(get_clock_seq)
 
     def get_node(self):
-        return self.int & 0xffffffffffff
+        return self.integer & 0xffffffffffff
 
     node = property(get_node)
 
-    def get_hex(self):
-        return '%032x' % self.int
+    def get_hexadec(self):
+        return '%032x' % self.integer
 
-    hex = property(get_hex)
+    hexadec = property(get_hexadec)
 
     def get_urn(self):
         return 'urn:uuid:' + str(self)
@@ -274,11 +274,11 @@ class UUID(object):
     urn = property(get_urn)
 
     def get_variant(self):
-        if not self.int & (0x8000 << 48L):
+        if not self.integer & (0x8000 << 48):
             return RESERVED_NCS
-        elif not self.int & (0x4000 << 48L):
+        elif not self.integer & (0x4000 << 48):
             return RFC_4122
-        elif not self.int & (0x2000 << 48L):
+        elif not self.integer & (0x2000 << 48):
             return RESERVED_MICROSOFT
         else:
             return RESERVED_FUTURE
@@ -288,7 +288,7 @@ class UUID(object):
     def get_version(self):
         # The version bits are only meaningful for RFC 4122 UUIDs.
         if self.variant == RFC_4122:
-            return int((self.int >> 76L) & 0xf)
+            return int((self.integer >> 76) & 0xf)
 
     version = property(get_version)
 
@@ -432,9 +432,9 @@ def _netbios_getnode():
         if win32wnet.Netbios(ncb) != 0:
             continue
         status._unpack()
-        bytes = map(ord, status.adapter_address)
-        return ((bytes[0]<<40L) + (bytes[1]<<32L) + (bytes[2]<<24L) +
-                (bytes[3]<<16L) + (bytes[4]<<8L) + bytes[5])
+        bytes = list(map(ord, status.adapter_address))
+        return ((bytes[0]<<40) + (bytes[1]<<32) + (bytes[2]<<24) +
+                (bytes[3]<<16) + (bytes[4]<<8) + bytes[5])
 
 # Thanks to Thomas Heller for ctypes and for his help with its use here.
 
@@ -503,7 +503,7 @@ def _windll_getnode():
 def _random_getnode():
     """Get a random node ID, with eighth bit set as suggested by RFC 4122."""
     import random
-    return random.randrange(0, 1<<48L) | 0x010000000000L
+    return random.randrange(0, 1<<48) | 0x010000000000
 
 _node = None
 
@@ -555,18 +555,18 @@ def uuid1(node=None, clock_seq=None):
     nanoseconds = int(time.time() * 1e9)
     # 0x01b21dd213814000 is the number of 100-ns intervals between the
     # UUID epoch 1582-10-15 00:00:00 and the Unix epoch 1970-01-01 00:00:00.
-    timestamp = int(nanoseconds//100) + 0x01b21dd213814000L
+    timestamp = int(nanoseconds//100) + 0x01b21dd213814000
     if _last_timestamp is not None and timestamp <= _last_timestamp:
         timestamp = _last_timestamp + 1
     _last_timestamp = timestamp
     if clock_seq is None:
         import random
-        clock_seq = random.randrange(1<<14L) # instead of stable storage
-    time_low = timestamp & 0xffffffffL
-    time_mid = (timestamp >> 32L) & 0xffffL
-    time_hi_version = (timestamp >> 48L) & 0x0fffL
-    clock_seq_low = clock_seq & 0xffL
-    clock_seq_hi_variant = (clock_seq >> 8L) & 0x3fL
+        clock_seq = random.randrange(1<<14) # instead of stable storage
+    time_low = timestamp & 0xffffffff
+    time_mid = (timestamp >> 32) & 0xffff
+    time_hi_version = (timestamp >> 48) & 0x0fff
+    clock_seq_low = clock_seq & 0xff
+    clock_seq_hi_variant = (clock_seq >> 8) & 0x3f
     if node is None:
         node = getnode()
     return UUID(fields=(time_low, time_mid, time_hi_version,

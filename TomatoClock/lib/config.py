@@ -8,9 +8,7 @@ from .kkLib import MetaConfigObj
 path_join = os.path.join
 
 
-class ProfileConfig:
-    __metaclass__ = MetaConfigObj
-
+class ProfileConfig(metaclass=MetaConfigObj):
     class Meta:
         __store_location__ = MetaConfigObj.StoreLocation.Profile
 
@@ -18,9 +16,7 @@ class ProfileConfig:
     ttc_current_version = ""
 
 
-class UserConfig:
-    __metaclass__ = MetaConfigObj
-
+class UserConfig(metaclass=MetaConfigObj):
     class Meta:
         __store_location__ = MetaConfigObj.StoreLocation.MediaFolder
         __config_file__ = "tomato_clock_user.json"

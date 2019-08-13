@@ -1,20 +1,20 @@
 # -*- coding: utf-8 -*-
-
-from __future__ import print_function
-
 import os
+from PyQt5.QtWidgets import *
 from threading import Thread
-from urllib import urlretrieve
+from urllib.request import urlretrieve
 
-from PyQt4.QtCore import Qt, QTimer
-from PyQt4.QtGui import QDockWidget, QWidget, QIcon
+from PyQt5.QtCore import Qt, QTimer
+#from PyQt5.QtGui import QDockWidget, QWidget, QIcon
+
+from aqt.qt import *
 
 from anki.sound import play
 from aqt import mw
 from aqt.main import AnkiQt
 from .lib.component import anki_overview, anki_reviewer, anki_deckbrowser
 from .lib.config import ProfileConfig, UserConfig
-from .lib.constant import MIN_SECS, STATISTICS_PY
+from .lib.constant import MIN_SECS
 from .lib.db import TomatoDB
 from .lib.sounds import BREAK
 from .ui.BreakDialog import RestDialog
@@ -26,22 +26,6 @@ class Timer(QTimer):
     def __init__(self, parent):
         super(Timer, self).__init__(parent)
         self.setInterval(1000)
-
-
-class _live_chart_py_downloader(Thread):
-
-    def __init__(self):
-        super(_live_chart_py_downloader, self).__init__()
-
-    def run(self):
-        try:
-            urlretrieve(
-                STATISTICS_PY,
-                "_tomatostats.py"
-            )
-        except:
-            pass
-
 
 # noinspection PyStatementEffect
 class OneClockAddon:
@@ -86,15 +70,8 @@ class OneClockAddon:
     def on_profile_loaded(self):
         ProfileConfig.donate_alerted = False
         UserConfig.BREAK_MINUTES  # just ensure json file is generated
-        try:
-            if UserConfig.LIVE_CODE_DOWNLOAD:
-                thr = _live_chart_py_downloader()
-                thr.start()
-        except:
-            pass
 
     def on_review_cleanup(self):
-        mw.setWindowIcon(QIcon(":/icons/anki.png"))
         if self.tm and self.tm.isActive():
             self.tm.stop()
         if self.pb:
@@ -103,16 +80,14 @@ class OneClockAddon:
 
         if self.dlg_rest:
             self.dlg_rest.hide()
-
         try:
             mw.reviewer.restore_layouts()
         except AttributeError:  # just in case "replace_mw_reviewer" is not called
             pass
 
     def on_btn_start_clicked(self):
-        self.replace_mw_reviewer()
-
-        mw.setWindowIcon(QIcon(":/icon/tomato.png"))
+        #makes blank
+        ####self.replace_mw_reviewer()
         assert isinstance(mw, AnkiQt)
 
         self.setup_progressbar()

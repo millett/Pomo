@@ -1,20 +1,22 @@
 # -*- coding: utf-8 -*-
-
+import os
 import re
+from PyQt5.QtWidgets import *
 from functools import partial
 
-from PyQt4.QtCore import Qt
-from PyQt4.QtGui import QListWidgetItem, QDialog, QIcon, QPixmap
+from PyQt5.QtCore import Qt
+#from PyQt5.QtGui import QListWidgetItem, QDialog, QIcon, QPixmap
+from PyQt5.QtGui import QIcon, QPixmap
+from PyQt5.QtWidgets import *
 
 from anki.sound import play
 from aqt import mw
-from .DonateWidget20 import DialogDonate
 from ._OneClock import Ui_TomatoClockDlg
 from ..lib.config import UserConfig
 from ..lib.constant import __version__, ADDON_CD
 from ..lib.lang import _
 from ..lib.sounds import START
-from ..lib.kkLib import WeChatButton, AddonUpdater, UpgradeButton, MoreAddonButton, ConfigEditor, VoteButton
+from ..lib.kkLib import AddonUpdater, UpgradeButton, ConfigEditor, VoteButton
 from .Config import ConfigDialog
 
 
@@ -71,17 +73,12 @@ class OneClock(QDialog, Ui_TomatoClockDlg):
     def _adjust_ui(self):
         self._adjust_min_list()
         self._adjust_dialog()
-
-        self.btn_donate.setIcon(QIcon(QPixmap(":/Icon/icons/dollar.png")))
-        self.btn_donate.setText("")
-        self.btn_donate.clicked.connect(partial(DialogDonate(mw).exec_))
-
         self.config_dlg = ConfigDialog(self, )
-
-        self.btn_setting.setIcon(QIcon(QPixmap(":/icon/setting.png")))
+        self.btn_setting.setIcon(QIcon(QPixmap(":icon/setting.png")))
         self.btn_setting.setText("")
         self.btn_setting.clicked.connect(self.on_config)
 
+        #### TODO
         self.updater = AddonUpdater(
             self,
             _("TOMATO COLOCK"),
@@ -91,23 +88,19 @@ class OneClock(QDialog, Ui_TomatoClockDlg):
             mw.pm.addonFolder(),
             __version__
         )
-        self.verticalLayout_3.insertWidget(1, WeChatButton(self, ":/icon/_anki365.jpg"))
-        self.verticalLayout_3.insertWidget(2, MoreAddonButton(self))
+        ### change ADDON_CD
         self.verticalLayout_4.insertWidget(0, VoteButton(self, ADDON_CD))
-
         self.verticalLayout_4.insertWidget(0, UpgradeButton(self, self.updater))
 
     def _adjust_dialog(self):
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.Window | Qt.WA_TranslucentBackground)
         self.setAttribute(Qt.WA_TranslucentBackground)
-        self.setWindowTitle(_("TOMATO CLOCK"))
+        self.setWindowTitle(_("POMODORE"))
 
         self.btn_cancel.setText(_(self.btn_cancel.text()))
         list(
-            map(
-                lambda item: item.setText(u"{} {}".format(re.match("\d+", item.text()).group(),
-                                                          _("MIN"))), self._min_items
-            )
+            [item.setText("{} {}".format(re.match("\d+", item.text()).group(),
+                                                          _("MIN"))) for item in self._min_items]
         )
 
     def _adjust_min_list(self):
@@ -118,9 +111,7 @@ class OneClock(QDialog, Ui_TomatoClockDlg):
         self.list_mis.addItems(sorted_keys)
 
         # adjust item alignment
-        list(map(
-            lambda item: item.setTextAlignment(Qt.AlignCenter), self._min_items
-        ))
+        list([item.setTextAlignment(Qt.AlignCenter) for item in self._min_items])
         # set default item
         self._min_items[2].setSelected(True)
 
