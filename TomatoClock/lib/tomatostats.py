@@ -11,8 +11,7 @@ from urllib.request import urlretrieve
 from PyQt5.QtCore import QUrl, QDir
 
 trans = {
-    'TOMATO COLOCK': {'zh_CN': '番茄时钟', 'en': 'Tomato Clock'},
-    'report days part1': {'zh_CN': '最近番茄时钟数据：', 'en': 'Recent Tomato Clock statistics：'},
+    'report days part1': {'zh_CN': '最近番茄时钟数据：', 'en': 'Recent Pomodore statistics：'},
     'days': {'zh_CN': '天', 'en': 'day(s)'},
     "'Minutes Studied'": {'zh_CN': "'学习分钟数'", 'en': "'Minutes Studied'"},
     "'Best Focus Hour'": {'zh_CN': "'最佳学习时段'", 'en': "'Best Focus Hour'"},
@@ -82,6 +81,34 @@ class TomatoStats:
              today_min_pctg, today_tomato_pctg) = self._numbers()
 
             summary_table_html = """
+
+            <style>
+                * {
+                    font-family: 'Microsoft YaHei UI', Consolas, serif;
+                }
+
+                .summary_td {
+                    text-align: center;
+                    font-family: 'Microsoft YaHei UI', Consolas, serif;
+                }
+
+                .summary_val {
+                    font-weight: bold;
+                    font-size: large;
+                }
+
+                .summary_lb {
+                    font-size: smaller;
+                }
+
+                .summary td {
+                    /*border: 1px solid #ed1c40;*/
+                    padding: 0 20px 20px 0;
+                    border-radius: .25rem;
+                    border-spacing: 0;
+                }
+            </style>
+            <br>
             <table  class=summary>
             <tr>
                 <td class="summary_td">
@@ -133,96 +160,7 @@ class TomatoStats:
                 today_tomato_pctg_val=str(round(float(today_tomato_pctg[0:-1]), 2))
             )
 
-            html = """
-            <html>
-            <style>
-                * {
-                    font-family: 'Microsoft YaHei UI', Consolas, serif;
-                }
-
-                .summary_td {
-                    text-align: center;
-                    font-family: 'Microsoft YaHei UI', Consolas, serif;
-                }
-
-                .summary_val {
-                    font-weight: bold;
-                    font-size: large;
-                }
-
-                .summary_lb {
-                    font-size: smaller;
-                }
-
-                .summary td {
-                    /*border: 1px solid #ed1c40;*/
-                    padding: 0 20px 20px 0;
-                    border-radius: .25rem;
-                    border-spacing: 0;
-                }
-            </style>
-            %s
-            <br>
-            <hr>
-            <table width=95%% align=center>
-                <tr>
-                    <td align=center colspan=2>
-                        %s
-                    </td>
-                </tr>
-                <tr>
-                    <td width=300px height=300px id=tomato_cnt align=center></td>
-                    <td width=300px height=300px id=cards_per_tomato_cnt align=center></td>
-                </tr>
-                <tr >
-                    <td width=300px height=300px id=study_minute align=center></td>
-                    <td width=600px height=300px id=tomato_hour align=center></td>
-                </tr>
-                <tr>
-                    <td align=left colspan=2>
-                        <div>%s <select id=recent_days onchange="sel_Change()">
-                          %s
-                        </select> %s</div>
-                    </td>
-                </tr>
-            </table>
-            <script>
-            function sel_Change(){
-                var objS = document.getElementById("recent_days");
-                var days = objS.options[objS.selectedIndex].value;
-                py.link('report_refresh' + days)
-            }
-            </script>
-            <hr>
-            %s
-            </html>
-            """
-            return_val = html % (self._js_ref + self._them_js_ref,
-
-                                 summary_table_html,
-
-                                 _("report days part1"),
-                                 "".join(
-                                     ['<option value=%(days)s '
-                                      '%(selected)s>%(days)s</option>' % dict(days=i,
-                                                                               selected="selected='selected'"
-                                                                               if i == self._recent_days else '')
-                                      for i in
-                                      days]
-                                 ),
-                                 _("days"),
-
-                                 """
-                                  <script>
-                                  {}
-                                  </script>
-                                  """.format("".join(reports_js)),
-
-                                 )
-            # set default selection
-            # document.getElementById("sel")[2].selected = true;
-            return return_val
-        return ''
+        return summary_table_html
 
     def _ref_js(self, js_source):
         js_file = "_" + os.path.basename(js_source)

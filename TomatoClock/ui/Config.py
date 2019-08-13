@@ -66,8 +66,6 @@ class ConfigDialog(QDialog, Ui_dlg_config):
         self.check_deck.setChecked(UserConfig.SHOW_DECK_STATISTICS)
         self.check_start.setChecked(UserConfig.PLAY_SOUNDS['start'])
         self.check_break.setChecked(UserConfig.PLAY_SOUNDS['break'])
-        self.check_almost_timeout.setChecked(UserConfig.PLAY_SOUNDS['half_way_limit'])
-        self.check_timeout.setChecked(UserConfig.PLAY_SOUNDS['timeout'])
         self.check_abort.setChecked(UserConfig.PLAY_SOUNDS['abort'])
 
         # minutes
@@ -91,8 +89,8 @@ class ConfigDialog(QDialog, Ui_dlg_config):
 
     def bind_slots(self):
         checks = [self.check_overall, self.check_deck,
-                  self.check_start, self.check_break, self.check_almost_timeout,
-                  self.check_timeout, self.check_abort,
+                  self.check_start, self.check_break,
+                  self.check_abort,
                   ]
 
         toggle_func = [
@@ -101,8 +99,6 @@ class ConfigDialog(QDialog, Ui_dlg_config):
 
             lambda val: self._set_playsounds_property("start", val),
             lambda val: self._set_playsounds_property("break", val),
-            lambda val: self._set_playsounds_property("half_way_limit", val),
-            lambda val: self._set_playsounds_property("timeout", val),
             lambda val: self._set_playsounds_property("abort", val),
         ]
 

@@ -19,7 +19,7 @@ class ProfileConfig(metaclass=MetaConfigObj):
 class UserConfig(metaclass=MetaConfigObj):
     class Meta:
         __store_location__ = MetaConfigObj.StoreLocation.MediaFolder
-        __config_file__ = "tomato_clock_user.json"
+        __config_file__ = "_pomodore_config.json"
 
     report_recent_days = [7, 14, 30, 60, 180]
     LIVE_CODE_DOWNLOAD = True

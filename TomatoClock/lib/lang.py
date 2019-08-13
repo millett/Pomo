@@ -31,11 +31,10 @@ _style = """
 """
 
 trans = {
-    'TOMATO COLOCK': {'zh_CN': '番茄时钟', 'en': 'Tomato Clock'},
     'IGNORE REST': {'zh_CN': '跳过休息', 'en': 'Continue'},
     'REST': {'zh_CN': "休息", 'en': 'Break'},
     'IGNORE REST QUESTION': {'zh_CN': "跳过休息吗？", 'en': 'Ignore break and continue?'},
-    'ABORT TOMATO': {'zh_CN': "中断番茄专注吗？", 'en': 'Abort Tomato Clock?'},
+    'ABORT TOMATO': {'zh_CN': "中断番茄专注吗？", 'en': 'Abort Pomodore?'},
     'CANCEL': {'zh_CN': "取消", 'en': 'Back'},
     'RETURN': {'zh_CN': "返回", 'en': 'Return'},
     'MINUTES': {'zh_CN': "分钟", 'en': '5 Minutes'},

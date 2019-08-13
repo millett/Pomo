@@ -238,12 +238,6 @@ class Ui_TomatoClockDlg(object):
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout()
         self.verticalLayout_3.setObjectName("verticalLayout_3")
-        self.btn_donate = QtWidgets.QPushButton(self.frame)
-        self.btn_donate.setMinimumSize(QtCore.QSize(30, 30))
-        self.btn_donate.setMaximumSize(QtCore.QSize(30, 30))
-        self.btn_donate.setFlat(True)
-        self.btn_donate.setObjectName("btn_donate")
-        self.verticalLayout_3.addWidget(self.btn_donate)
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_3.addItem(spacerItem)
         self.horizontalLayout_2.addLayout(self.verticalLayout_3)
@@ -373,7 +367,6 @@ class Ui_TomatoClockDlg(object):
 
     def retranslateUi(self, TomatoClockDlg):
         TomatoClockDlg.setWindowTitle(_translate("TomatoClockDlg", "Dialog", None))
-        self.btn_donate.setText(_translate("TomatoClockDlg", "DONATE", None))
         self.btn_setting.setText(_translate("TomatoClockDlg", "PushButton", None))
         __sortingEnabled = self.list_mis.isSortingEnabled()
         self.list_mis.setSortingEnabled(False)

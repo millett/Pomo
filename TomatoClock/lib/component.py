@@ -135,7 +135,7 @@ class anki_overview(Overview):
                 cur_log_ver, cur_update_msg = logs
                 if cur_log_ver != self.addon_version:
                     continue
-                QMessageBox.warning(mw, trans("TOMATO COLOCK"), """
+                QMessageBox.warning(mw, Pomodore, """
                 <p><b>v{} {}:</b></p>
                 <p>{}</p>
                 """.format(cur_log_ver, "更新" if currentLang == "zh_CN" else "Update", cur_update_msg))
@@ -185,7 +185,7 @@ class anki_overview(Overview):
                 anki.lang._("Learning"), counts[1],
                 anki.lang._("To Review"), counts[2],
                 but("study", _("Study Now"), id="study"),
-                but("tomato_clock", _2("TOMATO COLOCK"), id="study"),
+                but("tomato_clock", "Pomodore", id="study"),
                 # but("show_tomato_chart", "Tomato Charts", id="tomato_chart_btn")
                 self.reports()
             )

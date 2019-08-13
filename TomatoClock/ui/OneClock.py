@@ -78,12 +78,11 @@ class OneClock(QDialog, Ui_TomatoClockDlg):
         self.btn_setting.setText("")
         self.btn_setting.clicked.connect(self.on_config)
 
-        #### TODO
         self.updater = AddonUpdater(
             self,
-            _("TOMATO COLOCK"),
+            _("POMODORE"),
             ADDON_CD,
-            "https://raw.githubusercontent.com/upday7/TomatoClock/master/TomatoClock/lib/constant.py",
+            "https://github.com/Aliuakbar/TomatoClock/blob/master/TomatoClock/lib/constant.py",
             "",
             mw.pm.addonFolder(),
             __version__

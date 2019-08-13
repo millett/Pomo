@@ -23,8 +23,6 @@ if IS_PY3K:
     from http import client as httplib
     from urllib import request as web
     from urllib.request import urlretrieve
-
-    str = str
 else:
     import http.client
     import urllib2 as web
