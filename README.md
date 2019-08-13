@@ -6,12 +6,12 @@ minutes and take a break of 5 minutes.
 You can learn more it [here](https://en.wikipedia.org/wiki/Pomodoro_Technique)
 
 ### Installation
-- Installation Code: `TODO`
-- Addon Homepage: [https://ankiweb.net/shared/info/1608644302](https://ankiweb.net/shared/info/TODO)
--
+- Installation Code: 811976365
+- Addon Homepage: [https://ankiweb.net/shared/info/811976365 ](https://ankiweb.net/shared/info/811976365 )
+
 ##### Version
 Anki 2.1
-Forked from [Tomato Clock for Anki2.0](https://ankiweb.net/shared/info/1608644302)
+Forked from [Tomato Clock for Anki2.0](https://ankiweb.net/shared/info/811976365 )
 ### Screens
 ###### Select Tomato
 ![](https://raw.githubusercontent.com/Aliuakbar/Pomodore/master/TomatoClock/screens/menu.png)
