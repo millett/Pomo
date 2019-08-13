@@ -16,4 +16,4 @@ Forked from [Tomato Clock for Anki2.0](https://ankiweb.net/shared/info/160864430
 ###### Select Tomato
 ![](https://raw.githubusercontent.com/Aliuakbar/Pomodore/master/TomatoClock/screens/menu.png)
 ###### Break Timer
-![](https://raw.githubusercontent.com/Aliuakbar/Pomodore/master/TomatoClock/screens/rest.png)
+![](https://raw.githubusercontent.com/Aliuakbar/Pomodore/master/TomatoClock/screens/image.png)
