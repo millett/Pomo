@@ -17,3 +17,5 @@ Forked from [Tomato Clock for Anki2.0](https://ankiweb.net/shared/info/811976365
 ![](https://raw.githubusercontent.com/Aliuakbar/Pomodore/master/TomatoClock/screens/menu.png)
 ###### Break Timer
 ![](https://raw.githubusercontent.com/Aliuakbar/Pomodore/master/TomatoClock/screens/image.png)
+###### Config Menu
+![](https://raw.githubusercontent.com/Aliuakbar/Pomodore/master/TomatoClock/screens/config.png)
