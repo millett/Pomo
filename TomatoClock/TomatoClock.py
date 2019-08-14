@@ -51,11 +51,12 @@ class OneClockAddon:
         mw.reviewer = anki_reviewer(self.dlg.mode, self.db)
 
     def replace_mw_deckbrowser(self):
-        mw.deckBrowser = anki_deckbrowser(self.db)
+        #mw.deckBrowser = anki_deckbrowser(self.db)
         mw.deckBrowser.refresh()
 
     @staticmethod
     def _set_style_sheet(obj):
+        pass
         with open(os.path.join(os.path.dirname(__file__), "ui", "designer", "style.css"), "r") as f:
             obj.setStyleSheet(f.read())
 

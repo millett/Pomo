@@ -89,7 +89,6 @@ class anki_deckbrowser(DeckBrowser):
             self._dueTree = self.mw.col.sched.deckDueTree()
         tree = self._renderDeckTree(self._dueTree)
         stats = self._renderStats()
-        #op = self._oldPos()
         self.web.stdHtml(self._body % dict(
             tomato_summary=self.reports(),
             tree=tree, stats=stats, countwarn=self._countWarn()),
@@ -97,7 +96,6 @@ class anki_deckbrowser(DeckBrowser):
                         js=["jquery.js", "jquery-ui.js", "deckbrowser.js"])
         self.web.key = "deckBrowser"
         self._drawButtons()
-        #self.web.setLinkHandler(self._linkHandler)
 
 
 
