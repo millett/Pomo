@@ -36,7 +36,7 @@ class anki_deckbrowser(DeckBrowser):
         if url.startswith("report_refresh"):
             self.report_recent_days = int(url.replace("report_refresh", ""))
             mw.deckBrowser.refresh()
-        super(anki_deckbrowser, self)._linkHandler(url)
+        return super(anki_deckbrowser, self)._linkHandler(url)
 
     _body = """
         <center>
@@ -125,7 +125,7 @@ class anki_overview(Overview):
             self.report_recent_days = int(url.replace("report_refresh", ""))
             mw.overview.refresh()
         else:
-            super(anki_overview, self)._linkHandler(url)
+            return super(anki_overview, self)._linkHandler(url)
 
     def show_update_logs(self):
         if ProfileConfig.ttc_current_version != self.addon_version:
@@ -254,7 +254,7 @@ class anki_reviewer(Reviewer):
             if UserConfig.SHOW_ANSWER_ON_CARD_TIMEOUT:
                 self._showAnswer()
         else:
-            super(anki_reviewer, self)._linkHandler(url)
+            return super(anki_reviewer, self)._linkHandler(url)
 
     def NO_bottomHTML(self): #deac
         if not self.mode:
