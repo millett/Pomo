@@ -82,7 +82,7 @@ class OneClock(QDialog, Ui_TomatoClockDlg):
             self,
             _("POMODORE"),
             ADDON_CD,
-            "https://github.com/Aliuakbar/Pomodore/blob/master/TomatoClock/lib/constant.py",
+            "https://github.com/millett/pomo/blob/master/TomatoClock/lib/constant.py",
             "",
             mw.pm.addonFolder(),
             __version__
