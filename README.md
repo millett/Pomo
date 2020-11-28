@@ -1,7 +1,7 @@
 # Pomo (formerly Pomodore)
 The vast majority of credit for this addon goes to https://github.com/Aliuakbar.
 
-This version just allows break time modification. The interface still looks a little buggy but I may fix it in the next few months.
+This version lets you modify the amount of break time you have in the config (click on the gear icon).
 
 ## Introduction
 This is an addon for [Anki](https://apps.ankiweb.net/) which augments your
