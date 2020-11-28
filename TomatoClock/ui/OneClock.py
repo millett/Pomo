@@ -82,7 +82,7 @@ class OneClock(QDialog, Ui_TomatoClockDlg):
             self,
             _("POMODORE"),
             ADDON_CD,
-            "https://github.com/Aliuakbar/Pomodore/blob/master/TomatoClock/lib/constant.py",
+            "https://github.com/millett/pomo/blob/master/TomatoClock/lib/constant.py",
             "",
             mw.pm.addonFolder(),
             __version__
@@ -97,10 +97,6 @@ class OneClock(QDialog, Ui_TomatoClockDlg):
         self.setWindowTitle(_("POMODORE"))
 
         self.btn_cancel.setText(_(self.btn_cancel.text()))
-        list(
-            [item.setText("{} {}".format(re.match("\d+", item.text()).group(),
-                                                          _("MIN"))) for item in self._min_items]
-        )
 
     def _adjust_min_list(self):
         break_min_dicts = UserConfig.BREAK_MINUTES
@@ -108,6 +104,11 @@ class OneClock(QDialog, Ui_TomatoClockDlg):
 
         self.list_mis.clear()
         self.list_mis.addItems(sorted_keys)
+        for item in self._min_items:
+            work_time = item.text()
+            work_time = re.search(r'\d+', item.text()).group()
+            break_time = break_min_dicts[item.text()]
+            item.setText(str(work_time) + "-" + str(break_time) + " " + _("MIN"))
 
         # adjust item alignment
         list([item.setTextAlignment(Qt.AlignCenter) for item in self._min_items])
