@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 import json
 
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QMessageBox
+from PyQt6.QtCore import Qt
+from PyQt6.QtWidgets import QMessageBox
 
 import anki.lang
 from .constant import UPDATE_LOGS, __version__

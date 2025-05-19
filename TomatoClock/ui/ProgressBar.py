@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # Created: 3/8/2018
 # Project : OneClock
-from PyQt5.QtCore import Qt, pyqtSignal
-from PyQt5.QtWidgets import QProgressBar
+from PyQt6.QtCore import Qt, pyqtSignal
+from PyQt6.QtWidgets import QProgressBar
 
 
 class ClockProgress(QProgressBar):
@@ -15,12 +15,12 @@ class ClockProgress(QProgressBar):
         self._passed_secs = 0
         self._left_secs = self._total_secs
 
-        if area in (Qt.LeftDockWidgetArea, Qt.RightDockWidgetArea):
-            self.setOrientation(Qt.Vertical)
+        if area in (QT.DockWidgetArea.LeftDockWidgetArea, QT.DockWidgetArea.RightDockWidgetArea):
+            self.setOrientation(Qt.Orientation.Vertical)
             self.setFixedWidth(10)
             self.setTextVisible(False)
         else:
-            self.setOrientation(Qt.Horizontal)
+            self.setOrientation(Qt.Orientation.Horizontal)
             self.setFixedHeight(10)
             self.setTextVisible(False)
 

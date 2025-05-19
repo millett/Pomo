@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 import os
 import re
-from PyQt5.QtWidgets import *
+from PyQt6.QtWidgets import *
 from functools import partial
 
-from PyQt5.QtCore import Qt
-#from PyQt5.QtGui import QListWidgetItem, QDialog, QIcon, QPixmap
-from PyQt5.QtGui import QIcon, QPixmap
-from PyQt5.QtWidgets import *
+from PyQt6.QtCore import Qt
+#from PyQt6.QtGui import QListWidgetItem, QDialog, QIcon, QPixmap
+from PyQt6.QtGui import QIcon, QPixmap
+from PyQt6.QtWidgets import *
+from PyQt6 import QtCore  # <-- Add this import for QtCore enums
 
 from anki.sound import play
 from aqt import mw
@@ -53,14 +54,19 @@ class OneClock(QDialog, Ui_TomatoClockDlg):
     @property
     def _min_items(self):
         """
-
         :rtype: list of QListWidgetItem
         """
-        return self.list_mis.findItems('\d.+', Qt.MatchRegExp)
+        # Return all QListWidgetItems in the list
+        return [self.list_mis.item(i) for i in range(self.list_mis.count())]
 
     @property
     def min_item(self):
-        return [i for i in self._min_items if i.isSelected()][0]
+        # Return the first selected item from the list
+        selected = [i for i in self._min_items if i.isSelected()]
+        if not selected:
+            # fallback to the first item if nothing is selected
+            return self._min_items[0]
+        return selected[0]
 
     @property
     def min(self):
@@ -92,8 +98,12 @@ class OneClock(QDialog, Ui_TomatoClockDlg):
         self.verticalLayout_4.insertWidget(0, UpgradeButton(self, self.updater))
 
     def _adjust_dialog(self):
-        self.setWindowFlags(Qt.FramelessWindowHint | Qt.Window | Qt.WA_TranslucentBackground)
-        self.setAttribute(Qt.WA_TranslucentBackground)
+        # Use correct PyQt6 enums for window flags and attributes
+        self.setWindowFlags(
+            QtCore.Qt.WindowType.FramelessWindowHint |
+            QtCore.Qt.WindowType.Window
+        )
+        self.setAttribute(QtCore.Qt.WidgetAttribute.WA_TranslucentBackground)
         self.setWindowTitle(_("POMODORE"))
 
         self.btn_cancel.setText(_(self.btn_cancel.text()))
@@ -111,9 +121,11 @@ class OneClock(QDialog, Ui_TomatoClockDlg):
             item.setText(str(work_time) + "-" + str(break_time) + " " + _("MIN"))
 
         # adjust item alignment
-        list([item.setTextAlignment(Qt.AlignCenter) for item in self._min_items])
+        for item in self._min_items:
+            item.setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         # set default item
-        self._min_items[2].setSelected(True)
+        if len(self._min_items) > 2:
+            self._min_items[2].setSelected(True)
 
     def on_mode_toggled(self, mode, toggled):
         if toggled:

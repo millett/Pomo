@@ -8,7 +8,7 @@ from copy import deepcopy
 from operator import itemgetter
 from urllib.request import urlretrieve
 
-from PyQt5.QtCore import QUrl, QDir
+from PyQt6.QtCore import QUrl, QDir
 
 trans = {
     'report days part1': {'zh_CN': '最近番茄时钟数据：', 'en': 'Recent Pomodore statistics：'},

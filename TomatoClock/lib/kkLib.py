@@ -15,7 +15,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import sys
-from PyQt5.QtWidgets import *
+from PyQt6.QtWidgets import *
 
 IS_PY3K = sys.version[0] == '3'
 
@@ -193,8 +193,10 @@ class MetaConfigObj(type):
             _ = os.path.join(mw.addonManager.addonsFolder(), MetaConfigObj.AddonModelName())
         else:
             _ = mw.pm.addonFolder()
-        if aqt.isWin:
-            _ = _.encode(aqt.sys.getfilesystemencoding()).decode("utf-8")
+        # Replace aqt.platform with sys.platform checks
+        if sys.platform.startswith("win"):
+            # Windows-specific encoding if needed
+            _ = _.encode(sys.getfilesystemencoding()).decode("utf-8")
         return _.lower()
 
     @staticmethod
@@ -287,7 +289,8 @@ def getCreationDate(path_to_file):
     :param path_to_file:
     :rtype: datetime
     """
-    if aqt.isWin:
+    # Replace aqt.platform with sys.platform
+    if sys.platform.startswith("win"):
         return os.path.getctime(path_to_file)
     else:
         stat = os.stat(path_to_file)
@@ -427,7 +430,7 @@ class AddonUpdater(QThread):
             self.parent(),
             self.addon_name,
             trans("ASK UPDATE NEW VERSION"),
-            QMessageBox.Yes | QMessageBox.No
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
         )
 
     def alert_update_failed(self):
@@ -530,7 +533,7 @@ class JsonConfigEditor(QDialog):
             self.verticalLayout = QVBoxLayout(Dialog)
             self.verticalLayout.setObjectName("verticalLayout")
             self.editor = QPlainTextEdit(Dialog)
-            sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+            sizePolicy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
             sizePolicy.setHorizontalStretch(0)
             sizePolicy.setVerticalStretch(3)
             sizePolicy.setHeightForWidth(self.editor.sizePolicy().hasHeightForWidth())
@@ -538,7 +541,7 @@ class JsonConfigEditor(QDialog):
             self.editor.setObjectName("editor")
             self.verticalLayout.addWidget(self.editor)
             self.buttonBox = QDialogButtonBox(Dialog)
-            self.buttonBox.setOrientation(Qt.Horizontal)
+            self.buttonBox.setOrientation(Qt.Orientation.Horizontal)
             self.buttonBox.setStandardButtons(
                 QDialogButtonBox.Cancel | QDialogButtonBox.Ok)
             self.buttonBox.setObjectName("buttonBox")
@@ -606,7 +609,7 @@ class ConfigEditor(QDialog):
             self.verticalLayout = QVBoxLayout(Dialog)
             self.verticalLayout.setObjectName("verticalLayout")
             self.editor = QPlainTextEdit(Dialog)
-            sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+            sizePolicy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
             sizePolicy.setHorizontalStretch(0)
             sizePolicy.setVerticalStretch(3)
             sizePolicy.setHeightForWidth(self.editor.sizePolicy().hasHeightForWidth())
@@ -614,7 +617,7 @@ class ConfigEditor(QDialog):
             self.editor.setObjectName("editor")
             self.verticalLayout.addWidget(self.editor)
             self.buttonBox = QDialogButtonBox(Dialog)
-            self.buttonBox.setOrientation(Qt.Horizontal)
+            self.buttonBox.setOrientation(Qt.Orientation.Horizontal)
             self.buttonBox.setStandardButtons(
                 QDialogButtonBox.Cancel | QDialogButtonBox.Ok)
             self.buttonBox.setObjectName("buttonBox")
@@ -697,20 +700,20 @@ class UpgradeButton(_ImageButton):
             self.updater.alert_update_failed()
 
     def on_clicked(self):
-        if self.updater.ask_update() == QMessageBox.Yes:
+        if self.updater.ask_update() == QMessageBox.StandardButton.Yes:
             self.updater.upgrade()
 
 def HLine():
     toto = QFrame()
-    toto.setFrameShape(QFrame.HLine)
-    toto.setFrameShadow(QFrame.Sunken)
+    toto.setFrameShape(QFrame.Shape.HLine)
+    toto.setFrameShadow(QFrame.Shadow.Sunken)
     return toto
 
 
 def VLine():
     toto = QFrame()
-    toto.setFrameShape(QFrame.VLine)
-    toto.setFrameShadow(QFrame.Sunken)
+    toto.setFrameShape(QFrame.Shape.VLine)
+    toto.setFrameShadow(QFrame.Shadow.Sunken)
     return toto
 
 

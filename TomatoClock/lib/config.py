@@ -15,7 +15,7 @@ class ProfileConfig(metaclass=MetaConfigObj):
 
 class UserConfig(metaclass=MetaConfigObj):
     class Meta:
-        __store_location__ = MetaConfigObj.StoreLocation.MediaFolder
+        __store_location__ = MetaConfigObj.StoreLocation.AddonFolder
         __config_file__ = "_pomodore_config.json"
 
     report_recent_days = [7, 14, 30, 60, 180]

@@ -1,9 +1,10 @@
 import re
-from PyQt5.QtWidgets import *
+from PyQt6.QtWidgets import *
 from functools import partial
 
-from PyQt5.QtCore import Qt
-#from PyQt5.QtGui import QDialog, QTableWidgetItem
+from PyQt6.QtCore import Qt
+from PyQt6 import QtCore
+#from PyQt6.QtGui import QDialog, QTableWidgetItem
 
 from ._Config import Ui_dlg_config
 from ..lib.config import UserConfig
@@ -79,7 +80,7 @@ class ConfigDialog(QDialog, Ui_dlg_config):
                     item = QTableWidgetItem(str(break_min_dicts[sorted_keys[r]]))
                 else:
                     item = QTableWidgetItem(str(minutes_ints[r]))
-                item.setTextAlignment(Qt.AlignCenter)
+                item.setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
                 self.tableWidget.setItem(r, c, item)
 
     def _set_playsounds_property(self, sound_name, val):

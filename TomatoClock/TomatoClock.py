@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 import os
-from PyQt5.QtWidgets import *
+from PyQt6.QtWidgets import *
 from threading import Thread
 from urllib.request import urlretrieve
 
-from PyQt5.QtCore import Qt, QTimer
-#from PyQt5.QtGui import QDockWidget, QWidget, QIcon
+from PyQt6.QtCore import Qt, QTimer
+#from PyQt6.QtGui import QDockWidget, QWidget, QIcon
 
 from aqt.qt import *
 
@@ -31,7 +31,9 @@ class Timer(QTimer):
 class OneClockAddon:
 
     def __init__(self):
-        self.db = TomatoDB("_TomatoClock.db")
+        addon_dir = os.path.dirname(__file__)
+        db_path = os.path.join(addon_dir, "_TomatoClock.db")
+        self.db = TomatoDB(db_path)
         self.dlg = OneClock(mw)
 
         self.pb = None
@@ -144,9 +146,9 @@ class OneClockAddon:
 
     def setup_progressbar(self):
 
-        dockArea = Qt.TopDockWidgetArea
-        # dockArea = Qt.LeftDockWidgetArea
-        # dockArea = Qt.BottomDockWidgetArea
+        dockArea = QT.DockWidgetArea.TopDockWidgetArea
+        # dockArea = QT.DockWidgetArea.LeftDockWidgetArea
+        # dockArea = QT.DockWidgetArea.BottomDockWidgetArea
 
         self.pb_w = QDockWidget(mw)
         self.pb_w.setObjectName("progress_dock")
@@ -161,7 +163,7 @@ class OneClockAddon:
         w = QWidget(self.pb_w)
         w.setFixedHeight(self.pb.height())
         self.pb_w.setTitleBarWidget(w)
-        self.pb_w.setFeatures(QDockWidget.NoDockWidgetFeatures)
+        self.pb_w.setFeatures(QDockWidget.DockWidgetFeature.NoDockWidgetFeatures)
 
         # first check existing widgets
         existing_widgets = [widget for widget in mw.findChildren(QDockWidget) if mw.dockWidgetArea(widget) == dockArea]
@@ -173,10 +175,10 @@ class OneClockAddon:
         if len(existing_widgets) > 0:
             mw.setDockNestingEnabled(True)
 
-            if dockArea == Qt.TopDockWidgetArea or dockArea == Qt.BottomDockWidgetArea:
-                stack_method = Qt.Vertical
-            if dockArea == Qt.LeftDockWidgetArea or dockArea == Qt.RightDockWidgetArea:
-                stack_method = Qt.Horizontal
+            if dockArea == QT.DockWidgetArea.TopDockWidgetArea or dockArea == QT.DockWidgetArea.BottomDockWidgetArea:
+                stack_method = Qt.Orientation.Vertical
+            if dockArea == QT.DockWidgetArea.LeftDockWidgetArea or dockArea == QT.DockWidgetArea.RightDockWidgetArea:
+                stack_method = Qt.Orientation.Horizontal
             mw.splitDockWidget(existing_widgets[0], self.pb_w, stack_method)
 
         mw.web.setFocus()

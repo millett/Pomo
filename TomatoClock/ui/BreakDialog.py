@@ -1,9 +1,10 @@
 import math
-from PyQt5.QtWidgets import *
+from PyQt6.QtWidgets import *
 
-from PyQt5.QtCore import QTimer, QSize, Qt
-#from PyQt5.QtGui import (QProgressBar, QLabel, QFont, QVBoxLayout, QPainter, QPen, QColor, QDialog, QPushButton, QIcon,, QPixmap)
-from PyQt5.QtGui import QPainter, QColor, QFont, QPen
+from PyQt6.QtCore import QTimer, QSize, Qt
+from PyQt6 import QtCore
+#from PyQt6.QtGui import (QProgressBar, QLabel, QFont, QVBoxLayout, QPainter, QPen, QColor, QDialog, QPushButton, QIcon,, QPixmap)
+from PyQt6.QtGui import QPainter, QColor, QFont, QPen
 
 from aqt import mw
 from aqt.utils import askUser
@@ -76,8 +77,8 @@ class RestDialog(QDialog):
         self.timer.timeout.connect(self.to)
 
         self.l = QVBoxLayout(self)
-        self.l.addWidget(self.pr, 0, Qt.AlignCenter)
-        self.l.addWidget(self.btn_continue, 0, Qt.AlignCenter)
+        self.l.addWidget(self.pr, 0, QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.l.addWidget(self.btn_continue, 0, QtCore.Qt.AlignmentFlag.AlignCenter)
 
     def to(self):
         self.a += 1
