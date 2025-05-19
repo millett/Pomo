@@ -4,8 +4,8 @@ from PyQt6.QtWidgets import *
 from threading import Thread
 from urllib.request import urlretrieve
 
-from PyQt6.QtCore import Qt, QTimer
-#from PyQt6.QtGui import QDockWidget, QWidget, QIcon
+from PyQt6 import QtCore
+from PyQt6.QtCore import QTimer
 
 from aqt.qt import *
 
@@ -146,9 +146,9 @@ class OneClockAddon:
 
     def setup_progressbar(self):
 
-        dockArea = QT.DockWidgetArea.TopDockWidgetArea
-        # dockArea = QT.DockWidgetArea.LeftDockWidgetArea
-        # dockArea = QT.DockWidgetArea.BottomDockWidgetArea
+        dockArea = QtCore.Qt.DockWidgetArea.TopDockWidgetArea
+        # dockArea = QtCore.Qt.DockWidgetArea.LeftDockWidgetArea
+        # dockArea = QtCore.Qt.DockWidgetArea.BottomDockWidgetArea
 
         self.pb_w = QDockWidget(mw)
         self.pb_w.setObjectName("progress_dock")
@@ -175,10 +175,10 @@ class OneClockAddon:
         if len(existing_widgets) > 0:
             mw.setDockNestingEnabled(True)
 
-            if dockArea == QT.DockWidgetArea.TopDockWidgetArea or dockArea == QT.DockWidgetArea.BottomDockWidgetArea:
-                stack_method = Qt.Orientation.Vertical
-            if dockArea == QT.DockWidgetArea.LeftDockWidgetArea or dockArea == QT.DockWidgetArea.RightDockWidgetArea:
-                stack_method = Qt.Orientation.Horizontal
+            if dockArea == QtCore.Qt.DockWidgetArea.TopDockWidgetArea or dockArea == QtCore.Qt.DockWidgetArea.BottomDockWidgetArea:
+                stack_method = QtCore.Qt.Orientation.Vertical
+            if dockArea == QtCore.Qt.DockWidgetArea.LeftDockWidgetArea or dockArea == QtCore.Qt.DockWidgetArea.RightDockWidgetArea:
+                stack_method = QtCore.Qt.Orientation.Horizontal
             mw.splitDockWidget(existing_widgets[0], self.pb_w, stack_method)
 
         mw.web.setFocus()

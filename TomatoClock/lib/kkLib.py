@@ -16,6 +16,7 @@
 
 import sys
 from PyQt6.QtWidgets import *
+from PyQt6 import QtCore, QtGui, QtWidgets
 
 IS_PY3K = sys.version[0] == '3'
 
@@ -508,7 +509,7 @@ class ClickCloseDialog(QDialog):
         super(ClickCloseDialog, self).__init__(parent)
         self.l = QVBoxLayout(self)
         self.image_label = QLabel(self)
-        self.setWindowFlags(Qt.FramelessWindowHint | Qt.Window)
+        self.setWindowFlags(QtCore.Qt.WindowType.FramelessWindowHint | QtCore.Qt.WindowType.Window)
 
         self.l.addWidget(self.image_label)
 
@@ -571,7 +572,7 @@ class JsonConfigEditor(QDialog):
 
     def exec_(self):
         self.updateText()
-        super(JsonConfigEditor, self).exec_()
+        super(JsonConfigEditor, self).exec()
 
     def accept(self):
         txt = self.form.editor.toPlainText()
@@ -647,7 +648,7 @@ class ConfigEditor(QDialog):
 
     def exec_(self):
         self.updateText()
-        super(ConfigEditor, self).exec_()
+        super(ConfigEditor, self).exec()
 
     def accept(self):
         txt = self.form.editor.toPlainText()

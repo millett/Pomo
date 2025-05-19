@@ -1,7 +1,7 @@
 import math
 from PyQt6.QtWidgets import *
 
-from PyQt6.QtCore import QTimer, QSize, Qt
+from PyQt6.QtCore import QTimer, QSize
 from PyQt6 import QtCore
 #from PyQt6.QtGui import (QProgressBar, QLabel, QFont, QVBoxLayout, QPainter, QPen, QColor, QDialog, QPushButton, QIcon,, QPixmap)
 from PyQt6.QtGui import QPainter, QColor, QFont, QPen
@@ -56,8 +56,8 @@ class RestDialog(QDialog):
     def __init__(self, parent):
         super(RestDialog, self).__init__(parent)
 
-        self.setWindowFlags(Qt.FramelessWindowHint | Qt.Window)
-        self.setAttribute(Qt.WA_TranslucentBackground)
+        self.setWindowFlags(QtCore.Qt.WindowType.FramelessWindowHint | QtCore.Qt.WindowType.Window)
+        self.setAttribute(QtCore.Qt.WidgetAttribute.WA_TranslucentBackground)
 
         self.secs = 0
         self.pr = RoundProgress(self)
@@ -106,7 +106,7 @@ class RestDialog(QDialog):
     def exec_(self, tomato_min):
         self.start(UserConfig.BREAK_MINUTES.get(str(tomato_min) + "MIN", 5) * MIN_SECS)
         # seams reason for 5minutes break (display?) bug
-        return super(RestDialog, self).exec_()
+        return super(RestDialog, self).exec()
 
     def reject(self):
         if self.timer.isActive():

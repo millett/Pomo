@@ -2,7 +2,6 @@ import re
 from PyQt6.QtWidgets import *
 from functools import partial
 
-from PyQt6.QtCore import Qt
 from PyQt6 import QtCore
 #from PyQt6.QtGui import QDialog, QTableWidgetItem
 

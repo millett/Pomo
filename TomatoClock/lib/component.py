@@ -2,6 +2,7 @@
 import json
 
 from PyQt6.QtCore import Qt
+from PyQt6 import QtCore
 from PyQt6.QtWidgets import QMessageBox
 
 import anki.lang

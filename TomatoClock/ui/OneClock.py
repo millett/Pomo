@@ -4,11 +4,9 @@ import re
 from PyQt6.QtWidgets import *
 from functools import partial
 
-from PyQt6.QtCore import Qt
-#from PyQt6.QtGui import QListWidgetItem, QDialog, QIcon, QPixmap
+from PyQt6 import QtCore  # <-- Add this import for QtCore enums
 from PyQt6.QtGui import QIcon, QPixmap
 from PyQt6.QtWidgets import *
-from PyQt6 import QtCore  # <-- Add this import for QtCore enums
 
 from anki.sound import play
 from aqt import mw
@@ -141,4 +139,4 @@ class OneClock(QDialog, Ui_TomatoClockDlg):
             self.updater.start()
         if UserConfig.PLAY_SOUNDS["start"]:
             play(START)
-        return super(OneClock, self).exec_()
+        return super().exec()
