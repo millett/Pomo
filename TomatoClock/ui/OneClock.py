@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import os
 import re
+import sys
+import faulthandler
 from PyQt6.QtWidgets import *
 from functools import partial
 
@@ -18,6 +20,18 @@ from ..lib.sounds import START
 from ..lib.kkLib import AddonUpdater, UpgradeButton, ConfigEditor, VoteButton
 from .Config import ConfigDialog
 
+# Log Python exceptions to a file in the addon directory
+LOG_PATH = os.path.join(os.path.dirname(__file__), "pomo_crash.log")
+
+def excepthook(exc_type, exc_value, exc_traceback):
+    with open(LOG_PATH, "a") as f:
+        import traceback
+        f.write("Uncaught exception:\n")
+        traceback.print_exception(exc_type, exc_value, exc_traceback, file=f)
+sys.excepthook = excepthook
+
+# Log segfaults and fatal errors to the same file
+faulthandler.enable(open(LOG_PATH, "a"))
 
 class OneClock(QDialog, Ui_TomatoClockDlg):
 
@@ -69,10 +83,9 @@ class OneClock(QDialog, Ui_TomatoClockDlg):
     @property
     def min(self):
         """
-
-        :rtype: int
+        :rtype: float
         """
-        return int(re.match("\d+", self.min_item.text()).group())
+        return float(re.search(r"\d+(\.\d+)?", self.min_item.text()).group())
 
     def _adjust_ui(self):
         self._adjust_min_list()
@@ -114,8 +127,14 @@ class OneClock(QDialog, Ui_TomatoClockDlg):
         self.list_mis.addItems(sorted_keys)
         for item in self._min_items:
             work_time = item.text()
-            work_time = re.search(r'\d+', item.text()).group()
+            # Use regex to match floats as well as ints
+            match = re.search(r'\d+(\.\d+)?', item.text())
+            if match:
+                work_time = match.group()
+            else:
+                work_time = item.text()
             break_time = break_min_dicts[item.text()]
+            # Format both work_time and break_time as floats (if needed)
             item.setText(str(work_time) + "-" + str(break_time) + " " + _("MIN"))
 
         # adjust item alignment
@@ -130,11 +149,11 @@ class OneClock(QDialog, Ui_TomatoClockDlg):
             self.mode = mode
 
     def on_config(self, _):
-        self.config_dlg.exec_()
+        self.config_dlg.exec()
         self._adjust_min_list()
         self._adjust_dialog()
 
-    def exec_(self):
+    def exec(self):
         if not self.updater.isRunning():
             self.updater.start()
         if UserConfig.PLAY_SOUNDS["start"]:

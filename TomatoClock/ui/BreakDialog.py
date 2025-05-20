@@ -31,7 +31,7 @@ class RoundProgress(QProgressBar):
 
     def paintEvent(self, event):
         painter = QPainter(self)
-        painter.setRenderHint(QPainter.Antialiasing)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing)
         pen = QPen()
         pen.setWidth(2)
         pen.setColor(QColor("darkblue"))
@@ -97,21 +97,31 @@ class RestDialog(QDialog):
             self.accept()
 
     def start(self, secs):
-        self.total_secs = secs
+        self.total_secs = float(secs)
         self.a = 0
-        self.pr.setRange(0, self.total_secs)
+        self.pr.setRange(0, int(self.total_secs))
         self.timer.start()
 
     # noinspection PyMethodOverriding
-    def exec_(self, tomato_min):
-        self.start(UserConfig.BREAK_MINUTES.get(str(tomato_min) + "MIN", 5) * MIN_SECS)
-        # seams reason for 5minutes break (display?) bug
+    def exec(self, tomato_min):
+        # Use float for break minutes
+        self.start(float(UserConfig.BREAK_MINUTES.get(str(tomato_min) + "MIN", 5)) * MIN_SECS)
         return super(RestDialog, self).exec()
+
+    def accept(self):
+        if self.timer.isActive():
+            self.timer.stop()
+        super().accept()
 
     def reject(self):
         if self.timer.isActive():
             self.timer.stop()
-        super(RestDialog, self).reject()
+        super().reject()
+
+    def closeEvent(self, event):
+        if self.timer.isActive():
+            self.timer.stop()
+        super().closeEvent(event)
 
     def on_btn_ignore_rest(self, ):
         if askUser("""

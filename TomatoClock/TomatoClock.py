@@ -94,7 +94,7 @@ class OneClockAddon:
         assert isinstance(mw, AnkiQt)
 
         self.setup_progressbar()
-        self.pb.set_seconds(self.dlg.min * MIN_SECS)
+        self.pb.set_seconds(float(self.dlg.min) * MIN_SECS)
         if not self.tm:
             self.tm = Timer(mw)
             self.tm.timeout.connect(self.on_timer)
@@ -129,7 +129,7 @@ class OneClockAddon:
                 self.dlg_rest.rejected.connect(self.on_dlg_rest_rejected)
             if UserConfig.PLAY_SOUNDS["break"]:
                 play(BREAK)
-            self.dlg_rest.exec_(self.dlg.min)
+            self.dlg_rest.exec(float(self.dlg.min))
 
     @staticmethod
     def on_dlg_rest_accepted():
@@ -158,7 +158,7 @@ class OneClockAddon:
         else:
             self.pb.reset()
 
-        self.pb.set_seconds(self.dlg.min * MIN_SECS)
+        self.pb.set_seconds(float(self.dlg.min) * MIN_SECS)
         self.pb_w.setWidget(self.pb)
         w = QWidget(self.pb_w)
         w.setFixedHeight(self.pb.height())

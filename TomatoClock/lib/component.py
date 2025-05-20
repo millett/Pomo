@@ -121,7 +121,7 @@ class anki_overview(Overview):
         if url == 'tomato_clock':
             self.show_update_logs()
             self.dlg.btn_start.setText(anki.lang._("Study Now"))
-            self.dlg.exec_()
+            self.dlg.exec()
         elif url.startswith("report_refresh"):
             self.report_recent_days = int(url.replace("report_refresh", ""))
             mw.overview.refresh()

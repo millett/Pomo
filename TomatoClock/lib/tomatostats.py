@@ -249,7 +249,7 @@ class TomatoStats:
             y_tomato_min = _refill_value([round(i[1] / 60.0, 2) for i in _list_data])
 
             y_tomato_target_min = _refill_value([round(i[2] / 60.0, 2) for i in _list_data])
-            y_tomato_count = _refill_value([round(i[3], 2) for i in _list_data])
+            y_tomato_count = _refill_value([round(i[3], 2) if i[3] is not None else 0 for i in _list_data])
             y_cards_count = _refill_value([round(i[4], 2) for i in _list_data])
             cmp_tomato_cnt = _refill_value([round(i[5], 2) for i in _list_data])
             tried_tomato_cnt = _refill_value([round(i[6], 2) for i in _list_data])

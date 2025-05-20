@@ -1,0 +1,107 @@
+Uncaught exception:
+Traceback (most recent call last):
+  File "/Users/Matthew/Library/Application Support/Anki2/addons21/Pomo/TomatoClock/ui/BreakDialog.py", line 34, in paintEvent
+    painter.setRenderHint(QPainter.Antialiasing)
+AttributeError: type object 'QPainter' has no attribute 'Antialiasing'
+Uncaught exception:
+Traceback (most recent call last):
+  File "/Users/Matthew/Library/Application Support/Anki2/addons21/Pomo/TomatoClock/ui/BreakDialog.py", line 34, in paintEvent
+    painter.setRenderHint(QPainter.Antialiasing)
+AttributeError: type object 'QPainter' has no attribute 'Antialiasing'
+Uncaught exception:
+Traceback (most recent call last):
+  File "/Users/Matthew/Library/Application Support/Anki2/addons21/Pomo/TomatoClock/ui/BreakDialog.py", line 34, in paintEvent
+    painter.setRenderHint(QPainter.Antialiasing)
+AttributeError: type object 'QPainter' has no attribute 'Antialiasing'
+Uncaught exception:
+Traceback (most recent call last):
+  File "/Users/Matthew/Library/Application Support/Anki2/addons21/Pomo/TomatoClock/ui/BreakDialog.py", line 34, in paintEvent
+    painter.setRenderHint(QPainter.Antialiasing)
+AttributeError: type object 'QPainter' has no attribute 'Antialiasing'
+Fatal Python error: Segmentation fault
+
+Thread 0x00000002892ff000 (most recent call first):
+  File "concurrent.futures.thread", line 81 in _worker
+  File "threading", line 917 in run
+  File "threading", line 980 in _bootstrap_inner
+  File "threading", line 937 in _bootstrap
+
+Thread 0x000000028402b000 (most recent call first):
+  File "threading", line 316 in wait
+  File "queue", line 180 in get
+  File "aqt.mpv", line 366 in _get_event
+  File "aqt.mpv", line 505 in _event_reader
+  File "threading", line 917 in run
+  File "threading", line 980 in _bootstrap_inner
+  File "threading", line 937 in _bootstrap
+
+Thread 0x000000028301f000 (most recent call first):
+  File "aqt.mpv", line 248 in _reader
+  File "threading", line 917 in run
+  File "threading", line 980 in _bootstrap_inner
+  File "threading", line 937 in _bootstrap
+
+Thread 0x0000000282013000 (most recent call first):
+  File "concurrent.futures.thread", line 81 in _worker
+  File "threading", line 917 in run
+  File "threading", line 980 in _bootstrap_inner
+  File "threading", line 937 in _bootstrap
+
+Thread 0x0000000281007000 (most recent call first):
+  File "concurrent.futures.thread", line 81 in _worker
+  File "threading", line 917 in run
+  File "threading", line 980 in _bootstrap_inner
+  File "threading", line 937 in _bootstrap
+
+Thread 0x000000017c517000 (most recent call first):
+  File "threading", line 312 in wait
+  File "queue", line 171 in get
+  File "/Users/Matthew/Library/Application Support/Anki2/addons21/1562475180/networking.py", line 38 in process_queue
+  File "threading", line 917 in run
+  File "threading", line 980 in _bootstrap_inner
+  File "threading", line 937 in _bootstrap
+
+Thread 0x00000001742f7000 (most recent call first):
+  File "threading", line 312 in wait
+  File "waitress.task", line 72 in handler_thread
+  File "threading", line 917 in run
+  File "threading", line 980 in _bootstrap_inner
+  File "threading", line 937 in _bootstrap
+
+Thread 0x00000001732eb000 (most recent call first):
+  File "threading", line 312 in wait
+  File "waitress.task", line 72 in handler_thread
+  File "threading", line 917 in run
+  File "threading", line 980 in _bootstrap_inner
+  File "threading", line 937 in _bootstrap
+
+Thread 0x00000001722df000 (most recent call first):
+  File "threading", line 312 in wait
+  File "waitress.task", line 72 in handler_thread
+  File "threading", line 917 in run
+  File "threading", line 980 in _bootstrap_inner
+  File "threading", line 937 in _bootstrap
+
+Thread 0x00000001712d3000 (most recent call first):
+  File "threading", line 312 in wait
+  File "waitress.task", line 72 in handler_thread
+  File "threading", line 917 in run
+  File "threading", line 980 in _bootstrap_inner
+  File "threading", line 937 in _bootstrap
+
+Thread 0x00000001702c7000 (most recent call first):
+  File "waitress.wasyncore", line 172 in poll
+  File "waitress.wasyncore", line 245 in loop
+  File "waitress.server", line 325 in run
+  File "aqt.mediasrv", line 121 in run
+  File "threading", line 980 in _bootstrap_inner
+  File "threading", line 937 in _bootstrap
+
+Current thread 0x00000001de0f1ec0 (most recent call first):
+  File "/Users/Matthew/Library/Application Support/Anki2/addons21/Pomo/TomatoClock/ui/BreakDialog.py", line 109 in exec
+  File "/Users/Matthew/Library/Application Support/Anki2/addons21/Pomo/TomatoClock/TomatoClock.py", line 132 in on_tomato
+  File "/Users/Matthew/Library/Application Support/Anki2/addons21/Pomo/TomatoClock/ui/ProgressBar.py", line 45 in on_timer
+  File "/Users/Matthew/Library/Application Support/Anki2/addons21/Pomo/TomatoClock/TomatoClock.py", line 144 in on_timer
+  File "aqt", line 787 in _run
+  File "aqt", line 573 in run
+  File "<string>", line 1 in <module>

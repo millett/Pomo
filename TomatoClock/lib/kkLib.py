@@ -570,7 +570,7 @@ class JsonConfigEditor(QDialog):
         self.form.editor.setPlainText(
             json.dumps(self.conf, sort_keys=True, indent=4, separators=(',', ': ')))
 
-    def exec_(self):
+    def exec(self):
         self.updateText()
         super(JsonConfigEditor, self).exec()
 
@@ -646,7 +646,7 @@ class ConfigEditor(QDialog):
         self.form.editor.setPlainText(
             json.dumps(self.conf, sort_keys=True, indent=4, separators=(',', ': ')))
 
-    def exec_(self):
+    def exec(self):
         self.updateText()
         super(ConfigEditor, self).exec()
 

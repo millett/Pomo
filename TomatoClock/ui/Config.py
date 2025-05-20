@@ -35,10 +35,11 @@ class ConfigDialog(QDialog, Ui_dlg_config):
         assert isinstance(item, QTableWidgetItem)
 
         text = item.text()
-        if text.strip() and not re.match("^\d+$", text):
+        # Accept integers or decimals (e.g., 2, 2.5)
+        if text.strip() and not re.match(r"^\d+(\.\d+)?$", text):
             from aqt.utils import showWarning
             from ..lib.lang import _ as trans
-            showWarning(trans("ENTER ONLY DIGITS"))
+            showWarning(trans("ENTER ONLY NUMBERS"))
             return
 
         rc = self.tableWidget.rowCount()
@@ -56,7 +57,8 @@ class ConfigDialog(QDialog, Ui_dlg_config):
             if not all([work_txt, break_txt]):
                 continue
 
-            _dict["{}MIN".format(work_txt)] = int(break_txt)
+            # Store as float for fractional minutes
+            _dict["{}MIN".format(work_txt)] = float(break_txt)
         else:
             UserConfig.BREAK_MINUTES = _dict
 
